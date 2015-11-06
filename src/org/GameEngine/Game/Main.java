@@ -1,7 +1,6 @@
-package org.GameEngine.Main;
+package org.GameEngine.Game;
 import java.util.*;
 
-import org.GameEngine.Game.Game;
 import org.GameEngine.LevelManager.*;
 import org.GameEngine.Objects.*;
 import org.GameEngine.RenderEngine.*;
@@ -11,9 +10,10 @@ public class Main {
 	{
 		System.out.println("Hello World");
 		
-		RenderEngine renderEngine = new RenderEngine();
-		renderEngine.start();
+		RenderEngine renderEngine = new RenderEngine("This is My Title");
 		
+		
+		renderEngine.start();
 		Game game = new Game();
 		
 		game.play();

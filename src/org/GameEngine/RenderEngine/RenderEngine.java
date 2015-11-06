@@ -43,6 +43,9 @@ public class RenderEngine extends JFrame implements GLEventListener {
 		super("Minimal OpenGL");
         
 	}
+	public RenderEngine(String name){
+		super(name);
+	}
    
 
 	public void start(){
@@ -62,9 +65,6 @@ public class RenderEngine extends JFrame implements GLEventListener {
 
 	    
 	    this.setName("Minimal OpenGL");
-        this.getContentPane().add(canvas);
-
-        
 	    this.setSize(width, height);
 	    this.setLocationRelativeTo(null);
 	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -73,11 +73,11 @@ public class RenderEngine extends JFrame implements GLEventListener {
 	    this.setAutoRequestFocus(true);
 	    
 	    
+	    this.getContentPane().add(canvas);
         canvas.requestFocusInWindow();
         
 
         Animator animator = new Animator(canvas);
-        //animator.add(canvas);
         animator.start();
 		
 		
@@ -94,9 +94,6 @@ public class RenderEngine extends JFrame implements GLEventListener {
 		
 		Keyboard.Update();
 		Level.Update(drawable);
-		
-		
-		
 		
 	}
 	
@@ -148,29 +145,6 @@ public class RenderEngine extends JFrame implements GLEventListener {
        	program = gl.glCreateProgram();
 
        	
-       	
-       	//TODO add attribs for gameobject transform
-       	//position vec3
-       	
-       	//rotation mat3
-       	
-       	//scale vec3
-       	
-       	
-       	
-       	
-       	//TODO add attribs for textures
-       	
-       	
-       	//TODO add attribs for normals
-       	
-       	
-       	//TODO add attribs for camera location
-       	
-       	
-       	//TODO add attribs for Lighting effects (ambient, diffuse, ... )
-       	
-       	
        	// Create vertexShader.
        	int vertexShader = gl.glCreateShader(GL2ES2.GL_VERTEX_SHADER);
        	String[] vertexShaderSource = new String[1];
@@ -183,15 +157,7 @@ public class RenderEngine extends JFrame implements GLEventListener {
        	int fragmentShader = gl.glCreateShader(GL2ES2.GL_FRAGMENT_SHADER);
        	String[] fragmentShaderSource = new String[1];
        	fragmentShaderSource[0] = loadFile("src/org/GameEngine/RenderEngine/defaultFragmentShader.fsh");
-       	/*
-       	fragmentShaderSource[0] = "#version 330\n" +
-       	    "in vec4 vColor;\n" +
-       	    "out vec4 fColor;\n" +
-       	    "void main(void)\n" +
-       	    "{\n" +
-       	    "fColor = vColor;\n" +
-       	    "}\n";
-       	*/
+
        	gl.glShaderSource(fragmentShader, 1, fragmentShaderSource, null);
        	gl.glCompileShader(fragmentShader);
 

@@ -172,7 +172,7 @@ public final class Level {
 			Renderer r = gameObject.getRenderer();
 			if(r != null){
 				if(r.isActive()){
-					r.render(drawable,program, gameObject.getTransform());
+					r.render(drawable,program);
 				}
 			}
 		}

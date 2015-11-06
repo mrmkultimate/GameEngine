@@ -19,35 +19,30 @@ public class TestScript extends Script {
 	@Override
 	public void Update(){
 		List<GameObject> gameObjects = Level.GetGameObjects();
-		GameObject g = gameObjects.get(0);
 		
 		if(Keyboard.keyHit(Key.A)){
-			g.getTransform().Translate(new Vector3f(-0.1f,0,0));
-			System.out.println(g.getTransform().getPosition().y);
+			this.gameObject.getTransform().Translate(new Vector3f(-0.1f,0,0));
+			System.out.println(this.gameObject.getTransform().getPosition().x);
 		}	
 		if(Keyboard.keyHit(Key.S)){
-			g.getTransform().Translate(new Vector3f(0,-0.1f,0));
-			System.out.println(g.getTransform().getPosition().y);
+			this.gameObject.getTransform().Translate(new Vector3f(0,-0.1f,0));
+			System.out.println(this.gameObject.getTransform().getPosition().y);
 		}	
 		if(Keyboard.keyHit(Key.D)){
-			g.getTransform().Translate(new Vector3f(0.1f,0,0));
-			System.out.println(g.getTransform().getPosition().y);
+			this.gameObject.getTransform().Translate(new Vector3f(0.1f,0,0));
+			System.out.println(this.gameObject.getTransform().getPosition().x);
 		}	
 		if(Keyboard.keyHit(Key.W)){
-			g.getTransform().Translate(new Vector3f(0,0.1f,0));
-			System.out.println(g.getTransform().getPosition().y);
+			this.gameObject.getTransform().Translate(new Vector3f(0,0.1f,0));
+			System.out.println(this.gameObject.getTransform().getPosition().y);
 		}	
 		
 		
-		if(Keyboard.keyHit(Key.Space)){
-			/*
-			square[0] = square[0]+0.1f;	 
-			System.out.println(square[0]);
-			*/
-			
+		if(Keyboard.keyHeld(Key.Space)){
+		
 			t2 = t2 + 0.1f;
 
-			List<Color> previousColors = g.getRenderer().getMesh().getColors();
+			List<Color> previousColors = this.gameObject.getRenderer().getMesh().getColors();
 			
 			List<Color> newColors = new ArrayList<Color>();
 			
@@ -56,7 +51,7 @@ public class TestScript extends Script {
 			}
 			
 			
-			g.getRenderer().getMesh().setColors(newColors);
+			this.gameObject.getRenderer().getMesh().setColors(newColors);
 			
 		}
 		

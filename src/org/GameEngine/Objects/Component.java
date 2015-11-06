@@ -1,8 +1,10 @@
 package org.GameEngine.Objects;
 
 public class Component {
-	private String name = "Component";
-	private boolean active = true;
+	protected String name = "Component";
+	protected boolean active = true;
+	
+	protected GameObject gameObject; //the object the script is attached to
 	
 	public String getName() {
 		return name;
@@ -18,5 +20,13 @@ public class Component {
 
 	public void setActive(boolean active) {
 		this.active = active;
+	}
+
+	public GameObject getGameObject() {
+		return gameObject;
+	}
+
+	public void setGameObject(GameObject gameObject) {
+		this.gameObject = gameObject;
 	}
 }

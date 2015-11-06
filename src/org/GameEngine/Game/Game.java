@@ -68,6 +68,9 @@ public class Game {
 		
 		g.setRenderer(renderer);
 		
+		TestScript testScript = new TestScript();
+		g.addScript(testScript);;
+		
 		Level.AddGameObject(g);
 		
 		
@@ -98,10 +101,6 @@ public class Game {
 		Renderer renderer2 = new Renderer();
 		
 		renderer2.setMesh(mesh2);
-		
-		TestScript testScript = new TestScript();
-		
-		g2.addScript(testScript);;
 		
 		g2.setRenderer(renderer2);
 		

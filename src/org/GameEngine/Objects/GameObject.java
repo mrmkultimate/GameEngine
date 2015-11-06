@@ -10,10 +10,11 @@ public class GameObject {
 	private List<Script> scripts = new ArrayList<Script>();
 	private List<GameObject> children = new ArrayList<GameObject>();
 	private Camera camera = null;
+	private GameObject parent;
 	
 	public GameObject(){
-		renderer = null;
 		
+		transform.setGameObject(this);
 	}
 	
 	public String getName() {
@@ -29,6 +30,7 @@ public class GameObject {
 
 	public void setTransform(Transform transform) {
 		this.transform = transform;
+		transform.setGameObject(this);
 	}
 
 	public Renderer getRenderer() {
@@ -37,6 +39,7 @@ public class GameObject {
 
 	public void setRenderer(Renderer renderer) {
 		this.renderer = renderer;
+		renderer.setGameObject(this);
 	}
 
 	public List<Script> getScripts() {
@@ -45,10 +48,15 @@ public class GameObject {
 
 	public void setScripts(List<Script> scripts) {
 		this.scripts = scripts;
+		for(Script script:scripts){
+			script.setGameObject(this);
+		}
 	}
 	
 	public void addScript(Script script){
 		this.scripts.add(script);
+		script.setGameObject(this);
+		
 	}
 	public void clearScripts(){
 		this.scripts.clear();
@@ -60,6 +68,7 @@ public class GameObject {
 
 	public void setCollider(Collider collider) {
 		this.collider = collider;
+		collider.setGameObject(this);
 	}
 
 	public List<GameObject> getChildren() {
@@ -68,10 +77,14 @@ public class GameObject {
 
 	public void setChildren(List<GameObject> children) {
 		this.children = children;
+		//TODO: set parent to this
+		
 	}
 	
 	public void addChild(GameObject child){
 		this.children.add(child);
+		//TODO: set parent to this
+		
 	}
 	
 	public void clearChildren(){
@@ -84,6 +97,18 @@ public class GameObject {
 
 	public void setCamera(Camera camera) {
 		this.camera = camera;
+		camera.setGameObject(this);
+	}
+
+	public GameObject getParent() {
+		return parent;
+	}
+
+	public void setParent(GameObject parent) {
+		//TODO: remove from current parent and add as child to new parent
+		
+		
+		this.parent = parent;
 	}
 	
 	

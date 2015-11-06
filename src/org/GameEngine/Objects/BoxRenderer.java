@@ -8,7 +8,7 @@ public class BoxRenderer extends Renderer {
 	}
 	
 	@Override
-	public void render(GLAutoDrawable drawable,int program, Transform gameObjectTransform){
+	public void render(GLAutoDrawable drawable,int program){
 		
 	}
 	

@@ -36,7 +36,7 @@ public class Renderer extends Component {
 	float[] vertices;
 	float[] colors;
 	
-	float[] gameObjectPosition = new float[3];
+	float[] gameObjectPosition = new float[4];
 	
 	public Renderer(){ 
 		setName("Renderer");
@@ -44,7 +44,7 @@ public class Renderer extends Component {
 	}
 	
 	
-	public void render(GLAutoDrawable drawable, int program, Transform gameObjectTransform){
+	public void render(GLAutoDrawable drawable, int program){
 		
 		GL3 gl = drawable.getGL().getGL3();
 		
@@ -52,17 +52,18 @@ public class Renderer extends Component {
 		
 	
 		
-		gameObjectPosition[0] = gameObjectTransform.getPosition().x;
-		gameObjectPosition[1] = gameObjectTransform.getPosition().y;
-		gameObjectPosition[2] = gameObjectTransform.getPosition().z;
-		
+		gameObjectPosition[0] = this.gameObject.getTransform().getPosition().x;
+		gameObjectPosition[1] = this.gameObject.getTransform().getPosition().y;
+		gameObjectPosition[2] = this.gameObject.getTransform().getPosition().z;
+		gameObjectPosition[3] = 1.0f;
 		gameObjectPositionFB = FloatBuffer.wrap(gameObjectPosition);		
 		
 
 		//add transform position
-		gl.glUniform3fv(gl.glGetUniformLocation(program, "gameObjectPosition"), 1,	gameObjectPositionFB );
+		gl.glUniform4fv(gl.glGetUniformLocation(program, "gameObjectPosition"), 1,	gameObjectPositionFB );
 		
 		//add transform rotation as a matrix
+		
 		
 		//add transform scale
 		
@@ -72,6 +73,22 @@ public class Renderer extends Component {
 		
 	    //add projectionMatrix;
 		
+		/*
+		    attribute  vec4 vPosition;
+			attribute  vec3 vNormal;
+			attribute  vec2 vTexCoord;
+			
+			uniform vec4 ambientProduct, diffuseProduct, specularProduct;
+			uniform vec4 lightPosition;
+			uniform float shininess;
+			
+			uniform mat4 modelViewMatrix;
+			uniform mat4 projectionMatrix;
+			
+			varying vec4 color;
+			varying vec2 fTexCoord;
+		  
+		*/
 
 		gl.glBindVertexArray(vertexArray.get(0));
 	    gl.glDrawArrays(GL.GL_TRIANGLES, 0, mesh.getVertices().size());
@@ -125,16 +142,6 @@ public class Renderer extends Component {
        	gl.glEnableVertexAttribArray(1);
        	gl.glBindBuffer(GL.GL_ARRAY_BUFFER, buffers.get(1));
        	gl.glVertexAttribPointer(1, 4, GL.GL_FLOAT, false, 0, 0);
-       	
-       	//TODO add uniforms for gameobject transform
-       	//position vec3
-       	/*
-       	// VertexAttribArray 2 corresponds with location 2 in the vertex shader.
-       	gl.glEnableVertexAttribArray(2);
-       	gl.glBindBuffer(GL.GL_ARRAY_BUFFER, buffers.get(2));
-       	gl.glVertexAttribPointer(2, 3, GL.GL_FLOAT, false, 0, 0);
-       	*/
-       	
        	
        	
        	//rotation mat3

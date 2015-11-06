@@ -2,6 +2,7 @@ package org.GameEngine.Objects;
 
 public class Script extends Component {
 
+	
 	public Script(){ 
 		setName("Script");
 	}
@@ -20,5 +21,5 @@ public class Script extends Component {
 	public void LateUpdate(){
 		
 	}
-	
+
 }
