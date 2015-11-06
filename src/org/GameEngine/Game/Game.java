@@ -1,4 +1,4 @@
-package org.GameEngine.Main;
+package org.GameEngine.Game;
 
 import java.util.*;
 import com.jogamp.opengl.GL4;
@@ -99,10 +99,14 @@ public class Game {
 		
 		renderer2.setMesh(mesh2);
 		
+		TestScript testScript = new TestScript();
+		
+		g2.addScript(testScript);;
+		
 		g2.setRenderer(renderer2);
 		
 		Level.AddGameObject(g2);
-
+		
 
 	}
 }

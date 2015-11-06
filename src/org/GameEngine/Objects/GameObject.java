@@ -7,9 +7,9 @@ public class GameObject {
 	private Transform transform = new Transform();
 	private Renderer renderer;
 	private Collider collider;
-	private List<Script> scripts;
-	private List<GameObject> children;
-	
+	private List<Script> scripts = new ArrayList<Script>();
+	private List<GameObject> children = new ArrayList<GameObject>();
+	private Camera camera = null;
 	
 	public GameObject(){
 		renderer = null;
@@ -76,6 +76,14 @@ public class GameObject {
 	
 	public void clearChildren(){
 		this.children.clear();
+	}
+
+	public Camera getCamera() {
+		return camera;
+	}
+
+	public void setCamera(Camera camera) {
+		this.camera = camera;
 	}
 	
 	

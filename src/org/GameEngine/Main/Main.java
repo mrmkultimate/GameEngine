@@ -1,6 +1,7 @@
 package org.GameEngine.Main;
 import java.util.*;
 
+import org.GameEngine.Game.Game;
 import org.GameEngine.LevelManager.*;
 import org.GameEngine.Objects.*;
 import org.GameEngine.RenderEngine.*;

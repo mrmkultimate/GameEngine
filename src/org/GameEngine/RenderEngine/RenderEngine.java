@@ -33,8 +33,7 @@ public class RenderEngine extends JFrame implements GLEventListener {
     final private int width = 800;
 	final private int height = 600;
 	
-	private float t = 0;
-	private float t2 = 0;
+
 	
 	//OpenGL program
 	private int program;
@@ -91,63 +90,13 @@ public class RenderEngine extends JFrame implements GLEventListener {
 		
 		//TO DO: add time to deltaTime
 		
-		List<GameObject> gameObjects = Level.GetGameObjects();
-		GameObject g = gameObjects.get(0);
+		
 		
 		Keyboard.Update();
 		Level.Update(drawable);
-		if(Keyboard.keyHit(Key.S)){
-			g.getTransform().Translate(new Vector3f(0,-0.1f,0));
-			//System.out.println(g.getTransform().getPosition().x);
-			System.out.println(g.getTransform().getPosition().y);
-		}	
-		
-		
-		if(Keyboard.keyHit(Key.W)){
-			/*
-			square[0] = square[0]+0.1f;	 
-			System.out.println(square[0]);
-			*/
-			
-			t2 = t2 + 0.1f;
-
-			List<Color> previousColors = g.getRenderer().getMesh().getColors();
-			
-			List<Color> newColors = new ArrayList<Color>();
-			
-			for(int i = 0; i<previousColors.size(); i++){
-				newColors.add(new Color((float)(Math.sin(t2)*Math.sin(t2)),(float)(Math.sin(t2 + i)*Math.sin(t2 + i)),(float)(Math.sin(t2 -i)*Math.sin(t2 -i)),1.0f));		
-			}
-			
-			
-			g.getRenderer().getMesh().setColors(newColors);
-			
-		}
-		
-		
-		GameObject g2 = gameObjects.get(1);
-		
-		List<Color> previousColors = g2.getRenderer().getMesh().getColors();
-		
-		List<Color> newColors = new ArrayList<Color>();
-		
-		for(int i = 0; i<previousColors.size(); i++){
-			newColors.add(new Color((float) (Math.sin(t + i)*Math.sin(t + i)),(float)(Math.sin(t + 3.14/4 + i)*Math.sin(t + 3.14/4 + i)),(float)(Math.sin(t + 3.14/2 + i)*Math.sin(t + 3.14/2 + i)),1.0f));		
-		}
-		t = t + 0.02f;
-		
-		g2.getRenderer().getMesh().setColors(newColors);
 		
 		
 		
-		
-		if(Keyboard.keyHeld(Key.Escape)){
-			//Exit program
-			drawable.getAnimator().stop();
-			this.dispose(drawable);
-		    System.exit(0);
-			
-		}
 		
 	}
 	
@@ -155,9 +104,13 @@ public class RenderEngine extends JFrame implements GLEventListener {
 	@Override
 	public void display(GLAutoDrawable drawable) {
 		
-		this.update(drawable);
-		this.render(drawable);
-		
+		if(Level.isExit()){
+			Exit(drawable);
+		}
+		else{
+			this.update(drawable);
+			this.render(drawable);
+		}
 	}
 	
 	public void render(GLAutoDrawable drawable){
@@ -174,7 +127,7 @@ public class RenderEngine extends JFrame implements GLEventListener {
  
 	@Override
 	public void dispose(GLAutoDrawable drawable) {
-		
+
 	}
 
 	@Override
@@ -281,5 +234,11 @@ public class RenderEngine extends JFrame implements GLEventListener {
 		return vertexCode.toString();
 	}
    	
+	
+	private void Exit(GLAutoDrawable drawable){
+		drawable.getAnimator().stop();
+		this.dispose(drawable);
+	    System.exit(0);
+	}
    	
 }

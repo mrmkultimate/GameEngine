@@ -7,7 +7,7 @@ public class Transform extends Component{
 	private Vector3f position = new Vector3f(0,0,0);
 	private Vector3f scale = new Vector3f(1,1,1);
 	//change to quaternion
-	private float rotation = 0.0f;//angle in radians
+	private Quaternion rotation = new Quaternion(0,0,0,1);//angle in radians
 	
 	public Transform(){ 
 		setName("Transform");
@@ -15,7 +15,7 @@ public class Transform extends Component{
 	
 	
 	public void Translate(Vector3f direction){
-		position.add(direction);
+		position.Add(direction);
 	}
 	
 
@@ -36,12 +36,12 @@ public class Transform extends Component{
 	}
 
 	
-	//change to quaternion
-	public float getRotation() {
+
+	public Quaternion getRotation() {
 		return rotation;
 	}
 
-	public void setRotation(float rotation) {
+	public void setRotation(Quaternion rotation) {
 		this.rotation = rotation;
 	}
 

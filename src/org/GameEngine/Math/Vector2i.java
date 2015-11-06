@@ -17,19 +17,19 @@ public class Vector2i {
 		this.y = Y;
 	}
 	
-	public int dot(Vector2i v1, Vector2i v2){
+	public int Dot(Vector2i v1, Vector2i v2){
 		return v1.x * v2.x + v1.y * v2.y;
 	}
 	
-	public int cross(Vector2i v1, Vector2i v2){
+	public int Cross(Vector2i v1, Vector2i v2){
 		return v1.x*v2.y - v2.x*v1.y;
 	}
 	
-	public Vector2i cross(Vector2i v, int z){
+	public Vector2i Cross(Vector2i v, int z){
 		return new Vector2i(z * v.y, -z * v.x);
 	}
 	
-	public Vector2i cross(int z, Vector2i  v){
+	public Vector2i Cross(int z, Vector2i  v){
 		return new Vector2i(-z * v.y, z * v.x);
 	}
 	
@@ -42,44 +42,44 @@ public class Vector2i {
 		y = v.y;		
 	}
 	
-	public Vector2i add(Vector2i  v){
+	public Vector2i Add(Vector2i  v){
 		x += v.x;
 		y += v.y;
 		return this;
 	}
 		
-	public static Vector2i add(Vector2i v1, Vector2i v2){
+	public static Vector2i Add(Vector2i v1, Vector2i v2){
 		Vector2i v3 = new Vector2i(0,0);
 		v3.x = v1.x + v2.x;
 		v3.y = v1.y + v2.y;
 		return v3;
 	}
 	
-	public Vector2i subtract(Vector2i  v){
+	public Vector2i Subtract(Vector2i  v){
 		x -= v.x;
 		y -= v.y;
 		return this;
 	}	
-	public static Vector2i subtract(Vector2i v1, Vector2i v2){
+	public static Vector2i Subtract(Vector2i v1, Vector2i v2){
 		Vector2i v3 = new Vector2i(0,0);
 		v3.x = v1.x + v2.x;
 		v3.y = v1.y + v2.y;
 		return v3;
 	}
-	public Vector2i multiply(int scalar){
+	public Vector2i Multiply(int scalar){
 		x *= scalar;
 		y *= scalar;
 		return this;
 	}
 	
-	public static Vector2i multiply(Vector2i v, int scalar){
+	public static Vector2i Multiply(Vector2i v, int scalar){
 		Vector2i v2 = new Vector2i(0,0);
 		v2.x = v.x*scalar;
 		v2.y = v.y*scalar;
 		return v2;
 	}
 	
-	public Vector2i divide(int scalar)
+	public Vector2i Divide(int scalar)
 	{
 		if (scalar == 0)
 			throw new RuntimeException("Divide by 0 prohibited");
@@ -90,7 +90,7 @@ public class Vector2i {
 		return this;
 	}
 	
-	public static Vector2i divide(Vector2i v, int scalar){
+	public static Vector2i Divide(Vector2i v, int scalar){
 		
 		if (scalar == 0)
 			throw new RuntimeException("Divide by 0 prohibited");
@@ -102,28 +102,28 @@ public class Vector2i {
 	}
 
 		
-	public int  magnitude()
+	public int  Magnitude()
 	{
 		return (int)Math.sqrt(x*x + y*y);
 	}
 	
-	public int  magnitudeSquared()
+	public int  MagnitudeSquared()
 	{
 		return x*x + y*y;
 	}
 	
-	public int  length(Vector2i v1, Vector2i v2)
+	public int  Length(Vector2i v1, Vector2i v2)
 	{
-		return (subtract(v1,v2)).magnitude();
+		return (Subtract(v1,v2)).Magnitude();
 	}
 	
 	public int  lengthSquared(Vector2i v1, Vector2i v2)
 	{
-		return (subtract(v1,v2)).magnitudeSquared();
+		return (Subtract(v1,v2)).MagnitudeSquared();
 	}
 	
 	//Rotates the Vector by angle radians
-	public Vector2i rotate(int angle) 
+	public Vector2i Rotate(int angle) 
 	{
 		int x0 = x;
 		int y0 = y;
@@ -134,9 +134,9 @@ public class Vector2i {
 		return this;
 	}
 	
-	public Vector2i  normalize()
+	public Vector2i  Normalize()
 	{
-		int currentMagnitude =  magnitude();
+		int currentMagnitude =  Magnitude();
 		
 		if (currentMagnitude == 0)
 		{
@@ -144,7 +144,7 @@ public class Vector2i {
 			//throw new RuntimeException("Divide by 0 prohibited")
 		}
 		
-		this.multiply(1).divide(currentMagnitude);
+		this.Multiply(1).Divide(currentMagnitude);
 	
 		return this;
 	}

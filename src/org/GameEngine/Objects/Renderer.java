@@ -100,8 +100,6 @@ public class Renderer extends Component {
 		mesh.setTextureVerticesUpdated(true);
 		mesh.setColorsUpdated(true);
 		
-		
-		
 	}
 	
 	public void init(GLAutoDrawable drawable){
