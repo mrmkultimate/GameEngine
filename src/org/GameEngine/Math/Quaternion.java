@@ -118,4 +118,10 @@ public class Quaternion {
 		return this;
 	}
 	
+	//TODO: QuatToRot for both matrix and yaw pitch roll
+	
+	//TODO: RotToQuat for both matrix and yaw pitch roll
+	
+	
+	
 }

@@ -4,6 +4,7 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.List;
 
+import org.GameEngine.LevelManager.Level;
 import org.GameEngine.Math.Vector3f;
 import org.GameEngine.RenderEngine.Color;
 import org.GameEngine.RenderEngine.Material;
@@ -50,7 +51,7 @@ public class Renderer extends Component {
 		
 		updateBuffers(drawable);
 		
-	
+		
 		
 		gameObjectPosition[0] = this.gameObject.getTransform().getPosition().x;
 		gameObjectPosition[1] = this.gameObject.getTransform().getPosition().y;
@@ -58,20 +59,43 @@ public class Renderer extends Component {
 		gameObjectPosition[3] = 1.0f;
 		gameObjectPositionFB = FloatBuffer.wrap(gameObjectPosition);		
 		
+		gl.glUniform4fv(gl.glGetUniformLocation(program, "gameObjectPosition"), 1,	gameObjectPositionFB );	
+		
+	
+		//TODO: calculate gameobject transformation matrix (for the position, rotation, and scale of the gameobject
+		
+		
+		
+		
+		
+		
+		
+		
+		//TODO: add gameobject transformation matrix
+		
+		
+		//TODO: add uniforms for light 
+		//	vec4 ambientProduct, diffuseProduct, specularProduct, lightPosition
+		//	float shininess;
+		
+		
+		
+		//TODO: calculate the model view matrix using the camera transform(used for position, rotation, scale of the camera)
+		GameObject camera = Level.getMainCameraObject();
+		
 
-		//add transform position
-		gl.glUniform4fv(gl.glGetUniformLocation(program, "gameObjectPosition"), 1,	gameObjectPositionFB );
-		
-		//add transform rotation as a matrix
+		//TODO: add model view matrix
 		
 		
-		//add transform scale
 		
-		//use camera transform to get the modelViewMatrix and projectionMatrix
 		
-		//add modelViewMatrix;
+		//TODO: use camera to get the projection matrix
 		
-	    //add projectionMatrix;
+		
+		
+		
+	    //TODO: add projection matrix (used for FOV, aspect, nearPlane, farPlane of the camera);
+		
 		
 		/*
 		    attribute  vec4 vPosition;
@@ -90,6 +114,7 @@ public class Renderer extends Component {
 		  
 		*/
 
+		//draw vertices
 		gl.glBindVertexArray(vertexArray.get(0));
 	    gl.glDrawArrays(GL.GL_TRIANGLES, 0, mesh.getVertices().size());
 		
@@ -144,27 +169,12 @@ public class Renderer extends Component {
        	gl.glVertexAttribPointer(1, 4, GL.GL_FLOAT, false, 0, 0);
        	
        	
-       	//rotation mat3
-       	
-       	//scale vec3
-       	
-       	
-       	
-       	
        	//TODO add attribs for textures
        	
        	
        	//TODO add attribs for normals
        	
-       	
-       	//TODO add attribs for camera location
-       	
-       	
-       	//TODO add attribs for Lighting effects (ambient, diffuse, ... )
-       	
-       	
-       	
-        
+     
        	initialized = true;
        	
 	}

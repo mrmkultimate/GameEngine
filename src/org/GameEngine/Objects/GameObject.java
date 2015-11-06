@@ -13,7 +13,6 @@ public class GameObject {
 	private GameObject parent;
 	
 	public GameObject(){
-		
 		transform.setGameObject(this);
 	}
 	
@@ -77,14 +76,15 @@ public class GameObject {
 
 	public void setChildren(List<GameObject> children) {
 		this.children = children;
-		//TODO: set parent to this
+		for(GameObject child:children){
+			child.setParent(this);
+		}
 		
 	}
 	
 	public void addChild(GameObject child){
 		this.children.add(child);
-		//TODO: set parent to this
-		
+		child.setParent(this);
 	}
 	
 	public void clearChildren(){
