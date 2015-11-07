@@ -1,4 +1,4 @@
-package org.GameEngine.Objects;
+package org.GameEngine.RenderEngine;
 
 import com.jogamp.opengl.GLAutoDrawable;
 

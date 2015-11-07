@@ -1,4 +1,6 @@
-package org.GameEngine.Objects;
+package org.GameEngine.RenderEngine;
+
+import org.GameEngine.Objects.Component;
 
 public class Camera extends Component {
 

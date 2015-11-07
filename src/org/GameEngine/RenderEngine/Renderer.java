@@ -1,14 +1,15 @@
-package org.GameEngine.Objects;
+package org.GameEngine.RenderEngine;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.List;
 
 import org.GameEngine.LevelManager.Level;
+import org.GameEngine.Math.Matrix4f;
 import org.GameEngine.Math.Vector3f;
-import org.GameEngine.RenderEngine.Color;
-import org.GameEngine.RenderEngine.Material;
-import org.GameEngine.RenderEngine.Mesh;
+import org.GameEngine.Objects.Component;
+import org.GameEngine.Objects.GameObject;
+import org.GameEngine.Objects.Transform;
 
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
@@ -33,12 +34,14 @@ public class Renderer extends Component {
 	FloatBuffer vertexFB;
 	FloatBuffer colorFB;
 	FloatBuffer gameObjectPositionFB;
+	FloatBuffer gameObjectTransformationMatrixFB;
 		
 	float[] vertices;
 	float[] colors;
 	
 	float[] gameObjectPosition = new float[4];
-	
+	float[] gameObjectTransformationMatrix = new float[16];
+			
 	public Renderer(){ 
 		setName("Renderer");
 		
@@ -52,7 +55,7 @@ public class Renderer extends Component {
 		updateBuffers(drawable);
 		
 		
-		
+		/*
 		gameObjectPosition[0] = this.gameObject.getTransform().getPosition().x;
 		gameObjectPosition[1] = this.gameObject.getTransform().getPosition().y;
 		gameObjectPosition[2] = this.gameObject.getTransform().getPosition().z;
@@ -60,16 +63,43 @@ public class Renderer extends Component {
 		gameObjectPositionFB = FloatBuffer.wrap(gameObjectPosition);		
 		
 		gl.glUniform4fv(gl.glGetUniformLocation(program, "gameObjectPosition"), 1,	gameObjectPositionFB );	
-		
+		*/
 	
-		//TODO: calculate gameobject transformation matrix (for the position, rotation, and scale of the gameobject
+		//TODO: calculate gameobject transformation matrix (for the position, rotation, and scale of the gameobject)
+		//scale, then rotate, then translate
+		Transform transform = this.gameObject.getTransform();
 		
 		
+		//scale
+		Matrix4f scaleMatrix = new Matrix4f().initIdentity();
+		scaleMatrix.set(0, 0, transform.getScale().x);
+		scaleMatrix.set(1, 1, transform.getScale().y);
+		scaleMatrix.set(2, 2, transform.getScale().z);
+		
+		//rotation
+		transform.getRotation().normalize();
+		Matrix4f rotationMatrix = new Matrix4f(transform.getRotation().ToRotationMatrix());
+
+		//position
+		Matrix4f positionMatrix = new Matrix4f().initIdentity();
+		positionMatrix.set(0, 3, transform.getPosition().x);
+		positionMatrix.set(1, 3, transform.getPosition().y);
+		positionMatrix.set(2, 3, transform.getPosition().z);
 		
 		
+		//transformationMatrix
+		Matrix4f transformationMatrix = new Matrix4f().initIdentity();
+		transformationMatrix.Multiply(positionMatrix).Multiply(rotationMatrix).Multiply(scaleMatrix);
 		
+		gameObjectTransformationMatrix = transformationMatrix.getMatrix1DArray();
+		gameObjectTransformationMatrixFB = FloatBuffer.wrap(gameObjectTransformationMatrix);		
+		gl.glUniformMatrix4fv(gl.glGetUniformLocation(program, "gameObjectTransformationMatrix"), 1,true,gameObjectTransformationMatrixFB);
 		
-		
+		/*void glUniformMatrix4fv( 	GLint location,
+  		GLsizei count,
+  		GLboolean transpose,
+  		const GLfloat *value);
+		 */
 		
 		//TODO: add gameobject transformation matrix
 		

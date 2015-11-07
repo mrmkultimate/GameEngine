@@ -26,6 +26,7 @@ import com.jogamp.opengl.util.*;
 import org.GameEngine.Objects.*;
 import org.GameEngine.RenderEngine.Color;
 import org.GameEngine.RenderEngine.Mesh;
+import org.GameEngine.RenderEngine.Renderer;
 import org.GameEngine.System.*;
 
 public class Game {
@@ -45,12 +46,40 @@ public class Game {
 		List<Vector3f> vertices= new ArrayList<Vector3f>();
 		List<Color> colors= new ArrayList<Color>();
 		
-		vertices.add(new Vector3f(-0.6f, -0.6f, 0));
-		vertices.add(new Vector3f(0.6f, -0.6f, 0));
-		vertices.add(new Vector3f(0.6f, 0.6f, 0));
-		vertices.add(new Vector3f(0.6f, 0.6f, 0));
-		vertices.add(new Vector3f(-0.6f, 0.6f, 0));
-		vertices.add(new Vector3f(-0.6f, -0.6f, 0));
+		vertices.add(new Vector3f(-0.5f, -0.5f, 0));
+		vertices.add(new Vector3f(0.5f, -0.5f, 0));
+		vertices.add(new Vector3f(0.5f, 0.5f, 0));
+		vertices.add(new Vector3f(0.5f, 0.5f, 0));
+		vertices.add(new Vector3f(-0.5f, 0.5f, 0));
+		vertices.add(new Vector3f(-0.5f, -0.5f, 0));
+		
+		vertices.add(new Vector3f(-0.5f, -0.5f, 0));
+		vertices.add(new Vector3f(-0.5f, -0.5f, 1));
+		vertices.add(new Vector3f(-0.5f, 0.5f, 1));
+		vertices.add(new Vector3f(-0.5f, -0.5f, 0));
+		vertices.add(new Vector3f(-0.5f, 0.5f, 1));
+		vertices.add(new Vector3f(-0.5f, 0.5f, 0));
+		
+		vertices.add(new Vector3f(-0.5f, -0.5f, 0));
+		vertices.add(new Vector3f(-0.5f, -0.5f, 1));
+		vertices.add(new Vector3f(0.5f, -0.5f, 1));
+		vertices.add(new Vector3f(-0.5f, -0.5f, 0));
+		vertices.add(new Vector3f(0.5f, -0.5f, 1));
+		vertices.add(new Vector3f(0.5f, -0.5f, 0));
+		
+		colors.add(new Color(1, 1, 0, 1));
+		colors.add(new Color(1, 1, 1, 1));
+		colors.add(new Color(0, 1, 1, 1));
+		colors.add(new Color(1, 0, 0, 1));
+		colors.add(new Color(0, 0, 1, 1));
+		colors.add(new Color(0, 1, 0, 1));
+		
+		colors.add(new Color(1, 1, 0, 1));
+		colors.add(new Color(1, 1, 1, 1));
+		colors.add(new Color(0, 1, 1, 1));
+		colors.add(new Color(1, 0, 0, 1));
+		colors.add(new Color(0, 0, 1, 1));
+		colors.add(new Color(0, 1, 0, 1));
 		
 		colors.add(new Color(1, 1, 0, 1));
 		colors.add(new Color(1, 1, 1, 1));
@@ -72,9 +101,10 @@ public class Game {
 		g.addScript(testScript);;
 		
 		Level.AddGameObject(g);
+		/*
 		
-		
-		
+		g.getTransform().setScale(new Vector3f(1.0f,1.0f,1.0f));
+		g.getTransform().setRotation(new Quaternion(0,0,0,1));
 		
 		GameObject g2 = new GameObject();
 		Mesh mesh2 = new Mesh();
@@ -105,7 +135,7 @@ public class Game {
 		g2.setRenderer(renderer2);
 		
 		Level.AddGameObject(g2);
-		
+		*/
 
 	}
 }

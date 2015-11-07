@@ -62,7 +62,7 @@ public class Quaternion {
 		x /= scalar;
 		y /= scalar;
 		z /= scalar;
-		z /= scalar;
+		w /= scalar;
 		
 		return this;
 	}
@@ -116,6 +116,49 @@ public class Quaternion {
 		this.Divide(currentMagnitude);
 	
 		return this;
+	}
+
+	//assume the quaternion isn't normalized
+	public Matrix4f ToRotationMatrix() {
+		// TODO: create Quat to Rot matrix
+		float sqw = this.w*this.w;
+		float sqx = this.x*this.x;
+		float sqy = this.y*this.y;
+		float sqz = this.z*this.z;
+
+		Matrix4f matrix = new Matrix4f();
+		
+	    // invs (inverse square length) is only required if quaternion is not already normalised
+		float invs = 1 / (sqx + sqy + sqz + sqw);
+				
+				
+		matrix.set(0,0,( sqx - sqy - sqz + sqw)*invs); // since sqw + sqx + sqy + sqz =1/invs*invs
+		matrix.set(1,1,(-sqx + sqy - sqz + sqw)*invs);
+		matrix.set(2,2,(-sqx - sqy + sqz + sqw)*invs);
+	    
+	    float tmp1 = this.x*this.y;
+	    float tmp2 = this.z*this.w;
+	    matrix.set(1,0,(2.0f*(tmp1 + tmp2)*invs));
+	    matrix.set(0,1,(2.0f*(tmp1 - tmp2)*invs));
+	    
+	    tmp1 = this.x*this.z;
+	    tmp2 = this.y*this.w;
+	    matrix.set(2,0,(2.0f*(tmp1 - tmp2)*invs));
+	    matrix.set(0,2,(2.0f*(tmp1 + tmp2)*invs));
+	    tmp1 = this.y*this.z;
+	    tmp2 = this.x*this.w;
+	    matrix.set(2,1,(2.0f*(tmp1 + tmp2)*invs));
+	    matrix.set(1,2, (tmp1 - tmp2)*invs); 
+		
+	    matrix.set(0, 3, 0);
+	    matrix.set(1,3,0);
+	    matrix.set(2,3,0);
+	    matrix.set(3,3,1);
+	    matrix.set(3,2,0);
+	    matrix.set(3,1,0);
+	    matrix.set(3,0,0);
+	    
+		return matrix;
 	}
 	
 	//TODO: QuatToRot for both matrix and yaw pitch roll

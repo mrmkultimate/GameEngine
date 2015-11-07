@@ -10,11 +10,24 @@ public class Matrix4f {
 		
 	}
 	
+	
+	public Matrix4f(Matrix4f mat){
+		this.setToEqual(mat.getMatrix2DArray());
+	}
+	
+	
 	public Matrix4f initIdentity(){
 		m[0][0] = 1; m[0][1] = 0; m[0][2] = 0; m[0][3] = 0;
 		m[1][0] = 0; m[1][1] = 1; m[1][2] = 0; m[1][3] = 0;
 		m[2][0] = 0; m[2][1] = 0; m[2][2] = 1; m[2][3] = 0;
 		m[3][0] = 0; m[3][1] = 0; m[3][2] = 0; m[3][3] = 1;
+		
+		for(int i = 0; i<4; i++){
+			for(int j = 0; j<4; j++){
+				matrix1DArray[i*4 + j] = m[i][j];
+			}
+		}
+		
 		
 		return this;
 	}
@@ -47,6 +60,7 @@ public class Matrix4f {
 	
 	
 	public float[] getMatrix1DArray() {
+		
 		return matrix1DArray.clone();
 	}
 	
@@ -54,10 +68,28 @@ public class Matrix4f {
 		return m.clone();
 	}
 	
+	public void setToEqual(Matrix4f matrix){
+		this.setToEqual(matrix.m);
+	}
+	
 	public void setToEqual(float[][] mat){
-		if(mat.length == 16){
-			
+		if(mat.length != 4){
+			return;
 		}
+		
+		for(int k = 0; k<4; k++){
+			if(mat[k].length != 4){
+				return;
+			}
+		}
+		
+		for(int i = 0; i<4; i++){
+			for(int j = 0; j<4; j++){
+				m[i][j] = mat[i][j];
+			}
+		}
+		
+		
 	}
 	
 	public void set(int x, int y, float value){

@@ -2,6 +2,8 @@ package org.GameEngine.LevelManager;
 import java.util.*;
 
 import org.GameEngine.Objects.*;
+import org.GameEngine.RenderEngine.Camera;
+import org.GameEngine.RenderEngine.Renderer;
 import org.GameEngine.System.*;
 
 import com.jogamp.opengl.GLAutoDrawable;

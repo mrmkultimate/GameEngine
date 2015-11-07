@@ -1,6 +1,9 @@
 package org.GameEngine.Objects;
 import java.util.*;
 
+import org.GameEngine.RenderEngine.Camera;
+import org.GameEngine.RenderEngine.Renderer;
+
 public class GameObject {
 
 	private String name = "Empty";
