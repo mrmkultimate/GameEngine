@@ -36,32 +36,87 @@ public class TestScript extends Script {
 			this.gameObject.getTransform().Translate(new Vector3f(0,0.1f,0));
 			System.out.println(this.gameObject.getTransform().getPosition().y);
 		}	
+		if(Keyboard.keyHit(Key.X)){
+			this.gameObject.getTransform().Translate(new Vector3f(0,0,-0.01f));
+			System.out.println(this.gameObject.getTransform().getPosition().z);
+		}	
+		if(Keyboard.keyHit(Key.C)){
+			this.gameObject.getTransform().Translate(new Vector3f(0,0,0.01f));
+			System.out.println(this.gameObject.getTransform().getPosition().z);
+		}	
+		
+		GameObject camera = Level.getMainCameraObject();
+		
+		if(Keyboard.keyHit(Key.J)){
+			camera.getTransform().Translate(new Vector3f(-0.1f,0,0));
+			System.out.println(camera.getTransform().getPosition().x);
+		}	
+		if(Keyboard.keyHit(Key.K)){
+			camera.getTransform().Translate(new Vector3f(0,-0.1f,0));
+			System.out.println(camera.getTransform().getPosition().y);
+		}	
+		if(Keyboard.keyHit(Key.L)){
+			camera.getTransform().Translate(new Vector3f(0.1f,0,0));
+			System.out.println(camera.getTransform().getPosition().x);
+		}	
+		if(Keyboard.keyHit(Key.I)){
+			camera.getTransform().Translate(new Vector3f(0,0.1f,0));
+			System.out.println(camera.getTransform().getPosition().y);
+		}	
+		if(Keyboard.keyHit(Key.M)){
+			camera.getTransform().Translate(new Vector3f(0,0,-0.01f));
+			System.out.println(camera.getTransform().getPosition().z);
+		}	
+		if(Keyboard.keyHit(Key.N)){
+			camera.getTransform().Translate(new Vector3f(0,0,0.01f));
+			System.out.println(camera.getTransform().getPosition().z);
+		}	
 		
 		
-		if(Keyboard.keyHeld(Key.Space)){
+		if(Keyboard.keyHit(Key.Space)){
 		
-			t2 = t2 + 0.01f;
+			t = t + 0.01f;
 
 			List<Color> previousColors = this.gameObject.getRenderer().getMesh().getColors();
 			
 			List<Color> newColors = new ArrayList<Color>();
 			
 			for(int i = 0; i<previousColors.size(); i++){
-				newColors.add(new Color((float)(Math.sin(t2)*Math.sin(t2)),(float)(Math.sin(t2 + i)*Math.sin(t2 + i)),(float)(Math.sin(t2 -i)*Math.sin(t2 -i)),1.0f));		
+				newColors.add(new Color((float)(Math.sin(t)*Math.sin(t)),(float)(Math.sin(t + i)*Math.sin(t + i)),(float)(Math.sin(t -i)*Math.sin(t -i)),1.0f));		
 			}
 			
 			Quaternion quat = this.gameObject.getTransform().getRotation();
 			
 	
-			this.gameObject.getTransform().setRotation(new Quaternion((float)Math.sin(t2),(float)-Math.sin(t2),(float)Math.sin(t2),0.5f).normalize());
+			this.gameObject.getTransform().setRotation(new Quaternion((float)Math.sin(t),(float)-Math.sin(t),(float)Math.sin(t),0.5f).normalize());
 			
 			
 			
 			this.gameObject.getRenderer().getMesh().setColors(newColors);
 			
+			System.out.println("object quat");
+			System.out.println(this.gameObject.getTransform().getRotation().x);
+			System.out.println(this.gameObject.getTransform().getRotation().y);
+			System.out.println(this.gameObject.getTransform().getRotation().z);
+			System.out.println(this.gameObject.getTransform().getRotation().w);
+			
+			
 		}
 		
-		System.out.println(this.gameObject.getTransform().getRotation().w);
+		if(Keyboard.keyHit(Key.H)){
+			
+			t2 = t2 + 0.01f;
+
+	
+			Quaternion quat = camera.getTransform().getRotation();
+			camera.getTransform().setRotation(new Quaternion((float)Math.sin(t2),(float)-Math.sin(t2),(float)Math.sin(t2),0.5f).normalize());
+			
+			System.out.println("camera quat");
+			System.out.println(camera.getTransform().getRotation().x);
+			System.out.println(camera.getTransform().getRotation().y);
+			System.out.println(camera.getTransform().getRotation().z);
+			System.out.println(camera.getTransform().getRotation().w);
+		}
 		
 		/*
 		GameObject g2 = gameObjects.get(1);

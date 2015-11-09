@@ -121,10 +121,12 @@ public class Quaternion {
 	//assume the quaternion isn't normalized
 	public Matrix4f ToRotationMatrix() {
 		// TODO: create Quat to Rot matrix
-		float sqw = this.w*this.w;
+		
 		float sqx = this.x*this.x;
 		float sqy = this.y*this.y;
 		float sqz = this.z*this.z;
+		float sqw = this.w*this.w;
+		
 
 		Matrix4f matrix = new Matrix4f();
 		
@@ -148,7 +150,7 @@ public class Quaternion {
 	    tmp1 = this.y*this.z;
 	    tmp2 = this.x*this.w;
 	    matrix.set(2,1,(2.0f*(tmp1 + tmp2)*invs));
-	    matrix.set(1,2, (tmp1 - tmp2)*invs); 
+	    matrix.set(1,2,(2.0f*(tmp1 - tmp2)*invs)); 
 		
 	    matrix.set(0, 3, 0);
 	    matrix.set(1,3,0);

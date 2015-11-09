@@ -4,20 +4,13 @@ import org.GameEngine.Objects.Component;
 
 public class Camera extends Component {
 
-	private float FOV;
-	private float nearPlane;
-	private float farPlane;
+	private float FOV = 1;
+	private float aspectRatio = 1;
+	private float nearPlane = 0.01f;
+	private float farPlane = 1000;
 	
 	public Camera(){ 
 		setName("Camera");
-	}
-
-	public float getFOV() {
-		return FOV;
-	}
-
-	public void setFOV(float fOV) {
-		FOV = fOV;
 	}
 
 	public float getNearPlane() {
@@ -34,6 +27,22 @@ public class Camera extends Component {
 
 	public void setFarPlane(float farPlane) {
 		this.farPlane = farPlane;
+	}
+
+	public float getAspectRatio() {
+		return aspectRatio;
+	}
+
+	public void setAspectRatio(float aspectRatio) {
+		this.aspectRatio = aspectRatio;
+	}
+
+	public float getFOV() {
+		return FOV;
+	}
+
+	public void setFOV(float fOV) {
+		FOV = fOV;
 	}
 	
 }

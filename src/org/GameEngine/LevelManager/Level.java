@@ -48,6 +48,7 @@ public final class Level {
 		return null;
 	}
 	
+	
 	public static List<GameObject> FindObjectsWithCamera(){
 		List<GameObject> cameraObjects = new ArrayList<GameObject>();
 		for(GameObject gameObject:gameObjects){

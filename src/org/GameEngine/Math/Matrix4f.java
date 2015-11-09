@@ -15,6 +15,19 @@ public class Matrix4f {
 		this.setToEqual(mat.getMatrix2DArray());
 	}
 	
+	public Matrix4f Transpose(){
+		float[][] tmp = m.clone();
+		for(int i = 0; i<4; i++){
+			for(int j = 0; j<4; j++){
+				m[i][j] = tmp[j][i];
+			}
+		}
+		return this;
+	}
+	
+	public static Matrix4f Transpose(Matrix4f matrix){
+		return matrix.Transpose();
+	}
 	
 	public Matrix4f initIdentity(){
 		m[0][0] = 1; m[0][1] = 0; m[0][2] = 0; m[0][3] = 0;
@@ -33,15 +46,16 @@ public class Matrix4f {
 	}
 	
 	public Matrix4f Multiply(Matrix4f rhm){
-
+		Matrix4f result = new Matrix4f();
 		for(int i = 0; i<4; i++){
 			for(int j = 0; j<4; j++){
-				this.set(i,j,m[i][0] * rhm.m[0][j] + 
+				result.set(i,j,m[i][0] * rhm.m[0][j] + 
 							m[i][1] * rhm.m[1][j] + 
 							m[i][2] * rhm.m[2][j] + 
 							m[i][3] * rhm.m[3][j]);
 			}
 		}
+		this.setToEqual(result);
 		return this;	
 	}
 	
@@ -58,17 +72,25 @@ public class Matrix4f {
 		return result;
 	}
 	
-	
+	private void update1DArray(){
+		for(int i = 0; i<4; i++){
+			for(int j = 0; j<4; j++){
+				matrix1DArray[i*4 + j] = m[i][j];
+			}
+		}
+	}
 	public float[] getMatrix1DArray() {
-		
+		this.update1DArray();
 		return matrix1DArray.clone();
 	}
 	
 	public float[][] getMatrix2DArray(){
-		return m.clone();
+		
+		return deepCopyFloatMatrix(m);
 	}
 	
 	public void setToEqual(Matrix4f matrix){
+		
 		this.setToEqual(matrix.m);
 	}
 	
@@ -95,12 +117,21 @@ public class Matrix4f {
 	public void set(int x, int y, float value){
 		
 		m[x][y] = value;
-		matrix1DArray[4*x+y] = value;
 	}
 	
 	public float get(int x, int y){
 		return m[x][y];
 	}
 	
+	
+	public static float[][] deepCopyFloatMatrix(float[][] input) {
+	    if (input == null)
+	        return null;
+	    float[][] result = new float[input.length][];
+	    for (int r = 0; r < input.length; r++) {
+	        result[r] = input[r].clone();
+	    }
+	    return result;
+	}
 	
 }

@@ -35,13 +35,17 @@ public class Renderer extends Component {
 	FloatBuffer colorFB;
 	FloatBuffer gameObjectPositionFB;
 	FloatBuffer gameObjectTransformationMatrixFB;
-		
+	FloatBuffer modelViewMatrixFB;
+	FloatBuffer projectionMatrixFB;	
+	
 	float[] vertices;
 	float[] colors;
 	
 	float[] gameObjectPosition = new float[4];
 	float[] gameObjectTransformationMatrix = new float[16];
-			
+	float[] modelViewMatrix = new float[16];
+	float[] projectionMatrix = new float[16];
+	
 	public Renderer(){ 
 		setName("Renderer");
 		
@@ -55,15 +59,7 @@ public class Renderer extends Component {
 		updateBuffers(drawable);
 		
 		
-		/*
-		gameObjectPosition[0] = this.gameObject.getTransform().getPosition().x;
-		gameObjectPosition[1] = this.gameObject.getTransform().getPosition().y;
-		gameObjectPosition[2] = this.gameObject.getTransform().getPosition().z;
-		gameObjectPosition[3] = 1.0f;
-		gameObjectPositionFB = FloatBuffer.wrap(gameObjectPosition);		
-		
-		gl.glUniform4fv(gl.glGetUniformLocation(program, "gameObjectPosition"), 1,	gameObjectPositionFB );	
-		*/
+	
 	
 		//TODO: calculate gameobject transformation matrix (for the position, rotation, and scale of the gameobject)
 		//scale, then rotate, then translate
@@ -91,8 +87,11 @@ public class Renderer extends Component {
 		Matrix4f transformationMatrix = new Matrix4f().initIdentity();
 		transformationMatrix.Multiply(positionMatrix).Multiply(rotationMatrix).Multiply(scaleMatrix);
 		
+		//put the matrix into a buffer 
 		gameObjectTransformationMatrix = transformationMatrix.getMatrix1DArray();
 		gameObjectTransformationMatrixFB = FloatBuffer.wrap(gameObjectTransformationMatrix);		
+		
+		//add transformation matrix to the shader
 		gl.glUniformMatrix4fv(gl.glGetUniformLocation(program, "gameObjectTransformationMatrix"), 1,true,gameObjectTransformationMatrixFB);
 		
 		/*void glUniformMatrix4fv( 	GLint location,
@@ -100,8 +99,6 @@ public class Renderer extends Component {
   		GLboolean transpose,
   		const GLfloat *value);
 		 */
-		
-		//TODO: add gameobject transformation matrix
 		
 		
 		//TODO: add uniforms for light 
@@ -112,19 +109,78 @@ public class Renderer extends Component {
 		
 		//TODO: calculate the model view matrix using the camera transform(used for position, rotation, scale of the camera)
 		GameObject camera = Level.getMainCameraObject();
+		Transform cameraTransform = camera.getTransform();
 		
+		/*
+		//scale
+		Matrix4f inverseCameraScaleMatrix = new Matrix4f().initIdentity();
+		inverseCameraScaleMatrix.set(0, 0, cameraTransform.getScale().x);
+		inverseCameraScaleMatrix.set(1, 1, cameraTransform.getScale().y);
+		inverseCameraScaleMatrix.set(2, 2, cameraTransform.getScale().z);
+		*/
+		
+		//rotation
+		transform.getRotation().normalize();
+		Matrix4f inverseCameraRotationMatrix = new Matrix4f(cameraTransform.getRotation().ToRotationMatrix()).Transpose();
+		
+		//position
+		Matrix4f inverseCameraPositionMatrix = new Matrix4f().initIdentity();
+		inverseCameraPositionMatrix.set(0, 3, -cameraTransform.getPosition().x);
+		inverseCameraPositionMatrix.set(1, 3, -cameraTransform.getPosition().y);
+		inverseCameraPositionMatrix.set(2, 3, -cameraTransform.getPosition().z);
+		
+		
+		//calculate model view matrix
+		Matrix4f ViewMatrix = new Matrix4f().initIdentity();
+		ViewMatrix.Multiply(inverseCameraRotationMatrix).Multiply(inverseCameraPositionMatrix);
+		
+		//put the matrix into a buffer 
+		modelViewMatrix = ViewMatrix.getMatrix1DArray();
+		modelViewMatrixFB = FloatBuffer.wrap(modelViewMatrix);		
+		
+		//add model view matrix to the shader
+		gl.glUniformMatrix4fv(gl.glGetUniformLocation(program, "modelViewMatrix"), 1,true,modelViewMatrixFB);
 
-		//TODO: add model view matrix
+	
+		
+		//TODO: get the projection matrix
+		
+		//			2D/W		0			0			0
+		//			0			2D/H		0			0
+		//	P = [	0			0			F/(F-D)		-FD/(F-D)
+		//			0			0			1			0
+		//
+		// D = near plane
+		// F = far plane
+		// W = view width at near plane
+		// H = view height at near plane
+		// 2D/H = 1.0/tan(D2R * fov / 2)
+		// 2D/W = 2D/(H*aspect)
 		
 		
+	    
+		Matrix4f projMatrix = new Matrix4f().initIdentity();
+		float D = camera.getCamera().getNearPlane();
+		float F = camera.getCamera().getFarPlane();
+		float fov = camera.getCamera().getFOV();
+		float aspect = camera.getCamera().getAspectRatio();
+		float yScale = (float) (1.0 / Math.tan(fov / 2));
+	    float xScale = yScale / aspect;
 		
+		projMatrix.set(0, 0, xScale);
+		projMatrix.set(1, 1, yScale);
+		projMatrix.set(2, 2, F/(F-D));
+		projMatrix.set(2, 3, -F*D/(F-D));
+		projMatrix.set(3, 2, 1);
+		projMatrix.set(3, 3, 0);
 		
-		//TODO: use camera to get the projection matrix
+		//put the matrix into a buffer 
+		projectionMatrix = projMatrix.getMatrix1DArray();
+		projectionMatrixFB = FloatBuffer.wrap(projectionMatrix);		
 		
-		
-		
-		
-	    //TODO: add projection matrix (used for FOV, aspect, nearPlane, farPlane of the camera);
+		//add projection matrix to the shader
+		gl.glUniformMatrix4fv(gl.glGetUniformLocation(program, "projectionMatrix"), 1,true,projectionMatrixFB);
+
 		
 		
 		/*

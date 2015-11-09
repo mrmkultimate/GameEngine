@@ -63,6 +63,7 @@ public class RenderEngine extends JFrame implements GLEventListener {
     	this.addKeyListener(input);
     	canvas.addKeyListener(input);
 
+    	Level.Init();
 	    
 	    this.setName("Minimal OpenGL");
 	    this.setSize(width, height);

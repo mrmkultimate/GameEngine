@@ -15,6 +15,6 @@ layout(location=1) in vec4 color;
 out vec4 vColor;
 void main(void)
 {
-	gl_Position = gameObjectTransformationMatrix*vec4(position, 1);
+	gl_Position = projectionMatrix*modelViewMatrix*gameObjectTransformationMatrix*vec4(position, 1);
 	vColor = color;
 }

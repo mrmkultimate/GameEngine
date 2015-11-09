@@ -24,6 +24,7 @@ import com.jogamp.opengl.glu.GLU;
 import com.jogamp.opengl.util.*;
 
 import org.GameEngine.Objects.*;
+import org.GameEngine.RenderEngine.Camera;
 import org.GameEngine.RenderEngine.Color;
 import org.GameEngine.RenderEngine.Mesh;
 import org.GameEngine.RenderEngine.Renderer;
@@ -101,41 +102,21 @@ public class Game {
 		g.addScript(testScript);;
 		
 		Level.AddGameObject(g);
-		/*
 		
-		g.getTransform().setScale(new Vector3f(1.0f,1.0f,1.0f));
-		g.getTransform().setRotation(new Quaternion(0,0,0,1));
 		
-		GameObject g2 = new GameObject();
-		Mesh mesh2 = new Mesh();
-		List<Vector3f> vertices2= new ArrayList<Vector3f>();
-		List<Color> colors2= new ArrayList<Color>();
+		GameObject cameraObject = new GameObject();
+		cameraObject.setCamera(new Camera());
+		cameraObject.getCamera().setFarPlane(100);
+		cameraObject.getCamera().setNearPlane(1);
+		cameraObject.getCamera().setFOV((float)Math.PI/4);
+		cameraObject.getCamera().setAspectRatio(1);
 		
-		vertices2.add(new Vector3f(-0.9f, -0.9f, 1));
-		vertices2.add(new Vector3f(0.9f, -0.9f, 1));
-		vertices2.add(new Vector3f(0.9f, 0.9f, 1));
-		vertices2.add(new Vector3f(0.9f, 0.9f, 1));
-		vertices2.add(new Vector3f(-0.9f, 0.9f, 1));
-		vertices2.add(new Vector3f(-0.9f, -0.9f, 1));
+		cameraObject.getTransform().setPosition(new Vector3f(0,0,-3.0f));
+
+		Level.setMainCameraObject(cameraObject);
 		
-		colors2.add(new Color(1, 1, 0, 1));
-		colors2.add(new Color(1, 1, 0, 1));
-		colors2.add(new Color(1, 1, 0, 1));
-		colors2.add(new Color(1, 1, 0, 1));
-		colors2.add(new Color(1, 1, 0, 1));
-		colors2.add(new Color(1, 1, 0, 1));
+		Level.AddGameObject(cameraObject);
 		
-		mesh2.setVertices(vertices2);
-		mesh2.setColors(colors2);
-		
-		Renderer renderer2 = new Renderer();
-		
-		renderer2.setMesh(mesh2);
-		
-		g2.setRenderer(renderer2);
-		
-		Level.AddGameObject(g2);
-		*/
 
 	}
 }

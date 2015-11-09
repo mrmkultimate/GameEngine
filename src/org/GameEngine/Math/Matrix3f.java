@@ -132,7 +132,7 @@ public class Matrix3f {
 	}
 	
 	public Matrix3f setToEqual(Matrix3f rhs){
-		m = rhs.m.clone();
+		m = Matrix4f.deepCopyFloatMatrix(rhs.m);
 		matrix1DArray = rhs.matrix1DArray.clone();
 		return this;
 	}
@@ -173,11 +173,14 @@ public class Matrix3f {
 	}
 	
 	public float[][] getMatrix() {
-		return m.clone();
+		
+		return Matrix4f.deepCopyFloatMatrix(m);
 	}
 
 	public void setToEqual(float[][] matrix2DArray) {
-		m = matrix2DArray.clone();
+		
+		m = Matrix4f.deepCopyFloatMatrix(matrix2DArray);
+		
 		matrix1DArray[0] = matrix2DArray[0][0];
 		matrix1DArray[1] = matrix2DArray[0][1];
 		matrix1DArray[2] = matrix2DArray[0][2];
