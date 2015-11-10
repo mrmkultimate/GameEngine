@@ -9,8 +9,11 @@ import org.GameEngine.Math.Vector3f;
 import org.GameEngine.Objects.GameObject;
 import org.GameEngine.Objects.Script;
 import org.GameEngine.RenderEngine.Color;
+import org.GameEngine.RenderEngine.Mesh;
+import org.GameEngine.RenderEngine.Renderer;
 import org.GameEngine.System.Key;
 import org.GameEngine.System.Keyboard;
+import org.GameEngine.System.Time;
 
 public class TestScript extends Script {
 	
@@ -20,67 +23,69 @@ public class TestScript extends Script {
 	private float ty = 0;
 	private float tz = 0;
 	
+	private float movementSpeed = 1.0f;
+	
 	@Override
 	public void Update(){
 		
-		if(Keyboard.keyHit(Key.A)){
-			this.gameObject.getTransform().Translate(new Vector3f(-0.1f,0,0));
+		if(Keyboard.keyHeld(Key.A)){
+			this.gameObject.getTransform().Translate(new Vector3f(-movementSpeed*Time.DeltaTime(),0,0));
 			System.out.println(this.gameObject.getTransform().getPosition().x);
 		}	
-		if(Keyboard.keyHit(Key.S)){
-			this.gameObject.getTransform().Translate(new Vector3f(0,-0.1f,0));
+		if(Keyboard.keyHeld(Key.S)){
+			this.gameObject.getTransform().Translate(new Vector3f(0,-movementSpeed*Time.DeltaTime(),0));
 			System.out.println(this.gameObject.getTransform().getPosition().y);
 		}	
-		if(Keyboard.keyHit(Key.D)){
-			this.gameObject.getTransform().Translate(new Vector3f(0.1f,0,0));
+		if(Keyboard.keyHeld(Key.D)){
+			this.gameObject.getTransform().Translate(new Vector3f(movementSpeed*Time.DeltaTime(),0,0));
 			System.out.println(this.gameObject.getTransform().getPosition().x);
 		}	
-		if(Keyboard.keyHit(Key.W)){
-			this.gameObject.getTransform().Translate(new Vector3f(0,0.1f,0));
+		if(Keyboard.keyHeld(Key.W)){
+			this.gameObject.getTransform().Translate(new Vector3f(0,movementSpeed*Time.DeltaTime(),0));
 			System.out.println(this.gameObject.getTransform().getPosition().y);
 		}	
-		if(Keyboard.keyHit(Key.X)){
-			this.gameObject.getTransform().Translate(new Vector3f(0,0,-0.01f));
+		if(Keyboard.keyHeld(Key.X)){
+			this.gameObject.getTransform().Translate(new Vector3f(0,0,-movementSpeed*Time.DeltaTime()));
 			System.out.println(this.gameObject.getTransform().getPosition().z);
 		}	
-		if(Keyboard.keyHit(Key.C)){
-			this.gameObject.getTransform().Translate(new Vector3f(0,0,0.01f));
+		if(Keyboard.keyHeld(Key.C)){
+			this.gameObject.getTransform().Translate(new Vector3f(0,0,movementSpeed*Time.DeltaTime()));
 			System.out.println(this.gameObject.getTransform().getPosition().z);
 		}	
 		
 		GameObject camera = Level.getMainCameraObject();
 		
-		if(Keyboard.keyHit(Key.J)){
-			camera.getTransform().Translate(new Vector3f(-0.1f,0,0));
+		if(Keyboard.keyHeld(Key.J)){
+			camera.getTransform().Translate(new Vector3f(-movementSpeed*Time.DeltaTime(),0,0));
 			System.out.println(camera.getTransform().getPosition().x);
 		}	
-		if(Keyboard.keyHit(Key.K)){
-			camera.getTransform().Translate(new Vector3f(0,-0.1f,0));
+		if(Keyboard.keyHeld(Key.K)){
+			camera.getTransform().Translate(new Vector3f(0,-movementSpeed*Time.DeltaTime(),0));
 			System.out.println(camera.getTransform().getPosition().y);
 		}	
-		if(Keyboard.keyHit(Key.L)){
-			camera.getTransform().Translate(new Vector3f(0.1f,0,0));
+		if(Keyboard.keyHeld(Key.L)){
+			camera.getTransform().Translate(new Vector3f(movementSpeed*Time.DeltaTime(),0,0));
 			System.out.println(camera.getTransform().getPosition().x);
 		}	
-		if(Keyboard.keyHit(Key.I)){
-			camera.getTransform().Translate(new Vector3f(0,0.1f,0));
+		if(Keyboard.keyHeld(Key.I)){
+			camera.getTransform().Translate(new Vector3f(0,movementSpeed*Time.DeltaTime(),0));
 			System.out.println(camera.getTransform().getPosition().y);
 		}	
-		if(Keyboard.keyHit(Key.M)){
-			camera.getTransform().Translate(new Vector3f(0,0,-0.01f));
+		if(Keyboard.keyHeld(Key.M)){
+			camera.getTransform().Translate(new Vector3f(0,0,-movementSpeed*Time.DeltaTime()));
 			System.out.println(camera.getTransform().getPosition().z);
 		}	
-		if(Keyboard.keyHit(Key.N)){
-			camera.getTransform().Translate(new Vector3f(0,0,0.01f));
+		if(Keyboard.keyHeld(Key.N)){
+			camera.getTransform().Translate(new Vector3f(0,0,movementSpeed*Time.DeltaTime()));
 			System.out.println(camera.getTransform().getPosition().z);
 		}	
 		
 		
 		if(Keyboard.keyHeld(Key.Space)){
 		
-			tx = tx + 0.01f;
-			ty = ty + 0.02f;
-			tz = tz + 0.005f;
+			tx +=  1f*Time.DeltaTime();
+			ty += 2f*Time.DeltaTime();
+			tz += 0.5f*Time.DeltaTime();
 
 			List<Color> previousColors = this.gameObject.getRenderer().getMesh().getColors();
 			
@@ -92,8 +97,6 @@ public class TestScript extends Script {
 			
 			this.gameObject.getTransform().getRotation().setEulerAngles(new Vector3f(tx,ty,tz));
 
-			
-			
 			this.gameObject.getRenderer().getMesh().setColors(newColors);
 			
 			System.out.println("object quat");
@@ -106,7 +109,7 @@ public class TestScript extends Script {
 		
 		if(Keyboard.keyHeld(Key.H)){
 			
-			t2 = t2 + 0.01f;
+			t2 += 0.1f*Time.DeltaTime();
 
 			
 			camera.getTransform().getRotation().setEulerAngles(new Vector3f(0,t2,0));
@@ -119,22 +122,6 @@ public class TestScript extends Script {
 			
 		}
 		
-		/*
-		GameObject g2 = gameObjects.get(1);
-		
-		List<Color> previousColors = g2.getRenderer().getMesh().getColors();
-		
-		List<Color> newColors = new ArrayList<Color>();
-		
-		for(int i = 0; i<previousColors.size(); i++){
-			newColors.add(new Color((float) (Math.sin(t + i)*Math.sin(t + i)),(float)(Math.sin(t + 3.14/4 + i)*Math.sin(t + 3.14/4 + i)),(float)(Math.sin(t + 3.14/2 + i)*Math.sin(t + 3.14/2 + i)),1.0f));		
-		}
-		t = t + 0.02f;
-		
-		g2.getRenderer().getMesh().setColors(newColors);
-		
-		*/
-		
 		
 		if(Keyboard.keyHeld(Key.Escape)){
 			//Exit program
@@ -142,6 +129,34 @@ public class TestScript extends Script {
 			
 		}
 		
+		if(Keyboard.keyHeld(Key.G)){
+		
+			GameObject newGameObject = new GameObject();
+			Mesh mesh = new Mesh();
+			List<Vector3f> vertices= new ArrayList<Vector3f>();
+			List<Color> colors= new ArrayList<Color>();
+			
+			vertices = this.gameObject.getRenderer().getMesh().getVertices();
+			colors = this.gameObject.getRenderer().getMesh().getColors();
+	
+			mesh.setVertices(vertices);
+			mesh.setColors(colors);		
+	
+			Renderer renderer = new Renderer();
+			
+			renderer.setMesh(mesh);
+			
+			newGameObject.setRenderer(renderer);
+	
+			newGameObject.getTransform().Translate(new Vector3f(gameObject.getTransform().getPosition().x,gameObject.getTransform().getPosition().y,gameObject.getTransform().getPosition().z));;
+			
+			
+			//TestScript testScript = new TestScript();
+			//newGameObject.addScript(testScript);
+			
+			Level.AddGameObject(newGameObject);
+			
+		}
 	}
 	
 }

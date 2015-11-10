@@ -11,12 +11,13 @@ import com.jogamp.opengl.GLAutoDrawable;
 public final class Level {
 	private static List<GameObject> gameObjects = new ArrayList<GameObject>();
 	private static GameObject mainCameraObject;
+	private static List<GameObject> gameObjectsToAdd = new ArrayList<GameObject>();
 	
 	private static boolean exit = false;
 	
 	private Level(){
 		gameObjects.clear();
-		
+		gameObjectsToAdd.clear();
 	}
 	
 	public static void testPrint(){
@@ -28,9 +29,10 @@ public final class Level {
 	}
 	
 	public static void AddGameObject(GameObject gameObject){
-		gameObjects.add(gameObject);
+		gameObjectsToAdd.add(gameObject);
+		
 		List<Script> scripts = gameObject.getScripts();
-		if(scripts != null){
+		if(!scripts.isEmpty()){
 			if(scripts.size()>0){
 				for(Script script:scripts){
 					script.Start();
@@ -83,7 +85,10 @@ public final class Level {
 		
 		LateUpdateScripts();
 		
+		AddNewObjectsToLevel();
+		
 	}
+	
 	
 	public static void UpdateTransforms(){
 		
@@ -136,7 +141,7 @@ public final class Level {
 		//Update
 		for(GameObject gameObject : gameObjects){
 			List<Script> scripts = gameObject.getScripts();
-			if(scripts != null){
+			if(!scripts.isEmpty()){
 				if(scripts.size()>0){
 					for(Script script : scripts){
 						if(script.isActive()){
@@ -165,6 +170,14 @@ public final class Level {
 				}
 			}
 		}
+	}
+	
+	
+	public static void AddNewObjectsToLevel(){
+		for(GameObject gameObject:gameObjectsToAdd){
+			gameObjects.add(gameObject);
+		}
+		gameObjectsToAdd.clear();
 	}
 	
 	

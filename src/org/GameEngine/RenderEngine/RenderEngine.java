@@ -30,8 +30,8 @@ import org.GameEngine.System.*;
 
 public class RenderEngine extends JFrame implements GLEventListener {
     private static final long serialVersionUID = 1L;
-    final private int width = 800;
-	final private int height = 600;
+    private static int width = 800;
+	private static int height = 600;
 	
 
 	
@@ -64,13 +64,15 @@ public class RenderEngine extends JFrame implements GLEventListener {
     	canvas.addKeyListener(input);
 
     	Level.Init();
+    	
 	    
-	    this.setName("Minimal OpenGL");
-	    this.setSize(width, height);
+	    width = (int) this.getSize().getWidth();
+	    height = (int) this.getSize().getHeight();
+	    
 	    this.setLocationRelativeTo(null);
 	    this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    this.setVisible(true);
-	    this.setResizable(true);
+	    
 	    this.setAutoRequestFocus(true);
 	    
 	    
@@ -92,8 +94,8 @@ public class RenderEngine extends JFrame implements GLEventListener {
 		//TO DO: add time to deltaTime
 		
 		
-		
 		Keyboard.Update();
+		Time.Update();
 		Level.Update(drawable);
 		
 	}

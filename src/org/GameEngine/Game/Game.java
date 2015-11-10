@@ -112,7 +112,7 @@ public class Game {
 		gameObject.setRenderer(renderer);
 		
 		TestScript testScript = new TestScript();
-		gameObject.addScript(testScript);;
+		gameObject.addScript(testScript);
 		
 		Level.AddGameObject(gameObject);
 		
