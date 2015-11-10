@@ -7,7 +7,7 @@ public class Camera extends Component {
 	private float FOV = 1;
 	private float aspectRatio = 1;
 	private float nearPlane = 0.01f;
-	private float farPlane = 1000;
+	private float farPlane = 100;
 	
 	public Camera(){ 
 		setName("Camera");

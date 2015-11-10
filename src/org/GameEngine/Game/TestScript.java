@@ -14,8 +14,11 @@ import org.GameEngine.System.Keyboard;
 
 public class TestScript extends Script {
 	
-	private float t = 0;
 	private float t2 = 0;
+	
+	private float tx = 0;
+	private float ty = 0;
+	private float tz = 0;
 	
 	@Override
 	public void Update(){
@@ -73,49 +76,47 @@ public class TestScript extends Script {
 		}	
 		
 		
-		if(Keyboard.keyHit(Key.Space)){
+		if(Keyboard.keyHeld(Key.Space)){
 		
-			t = t + 0.01f;
+			tx = tx + 0.01f;
+			ty = ty + 0.02f;
+			tz = tz + 0.005f;
 
 			List<Color> previousColors = this.gameObject.getRenderer().getMesh().getColors();
 			
 			List<Color> newColors = new ArrayList<Color>();
 			
 			for(int i = 0; i<previousColors.size(); i++){
-				newColors.add(new Color((float)(Math.sin(t)*Math.sin(t)),(float)(Math.sin(t + i)*Math.sin(t + i)),(float)(Math.sin(t -i)*Math.sin(t -i)),1.0f));		
+				newColors.add(new Color((float)(Math.sin(tx)*Math.sin(tx)),(float)(Math.sin(tx + i)*Math.sin(tx + i)),(float)(Math.sin(tx -i)*Math.sin(tx -i)),1.0f));		
 			}
 			
-			Quaternion quat = this.gameObject.getTransform().getRotation();
-			
-	
-			this.gameObject.getTransform().setRotation(new Quaternion((float)Math.sin(t),(float)-Math.sin(t),(float)Math.sin(t),0.5f).normalize());
-			
+			this.gameObject.getTransform().getRotation().setEulerAngles(new Vector3f(tx,ty,tz));
+
 			
 			
 			this.gameObject.getRenderer().getMesh().setColors(newColors);
 			
 			System.out.println("object quat");
-			System.out.println(this.gameObject.getTransform().getRotation().x);
-			System.out.println(this.gameObject.getTransform().getRotation().y);
-			System.out.println(this.gameObject.getTransform().getRotation().z);
-			System.out.println(this.gameObject.getTransform().getRotation().w);
-			
+			System.out.println(this.gameObject.getTransform().getRotation().getQuaternion().w);	
+			System.out.println(this.gameObject.getTransform().getRotation().getQuaternion().x);
+			System.out.println(this.gameObject.getTransform().getRotation().getQuaternion().y);
+			System.out.println(this.gameObject.getTransform().getRotation().getQuaternion().z);
 			
 		}
 		
-		if(Keyboard.keyHit(Key.H)){
+		if(Keyboard.keyHeld(Key.H)){
 			
 			t2 = t2 + 0.01f;
 
-	
-			Quaternion quat = camera.getTransform().getRotation();
-			camera.getTransform().setRotation(new Quaternion((float)Math.sin(t2),(float)-Math.sin(t2),(float)Math.sin(t2),0.5f).normalize());
+			
+			camera.getTransform().getRotation().setEulerAngles(new Vector3f(0,t2,0));
 			
 			System.out.println("camera quat");
-			System.out.println(camera.getTransform().getRotation().x);
-			System.out.println(camera.getTransform().getRotation().y);
-			System.out.println(camera.getTransform().getRotation().z);
-			System.out.println(camera.getTransform().getRotation().w);
+			System.out.println(camera.getTransform().getRotation().getQuaternion().w);
+			System.out.println(camera.getTransform().getRotation().getQuaternion().x);
+			System.out.println(camera.getTransform().getRotation().getQuaternion().y);
+			System.out.println(camera.getTransform().getRotation().getQuaternion().z);
+			
 		}
 		
 		/*

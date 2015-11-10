@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.GameEngine.LevelManager.Level;
 import org.GameEngine.Math.Matrix4f;
+import org.GameEngine.Math.Quaternion;
 import org.GameEngine.Math.Vector3f;
 import org.GameEngine.Objects.Component;
 import org.GameEngine.Objects.GameObject;
@@ -73,8 +74,8 @@ public class Renderer extends Component {
 		scaleMatrix.set(2, 2, transform.getScale().z);
 		
 		//rotation
-		transform.getRotation().normalize();
-		Matrix4f rotationMatrix = new Matrix4f(transform.getRotation().ToRotationMatrix());
+		transform.getRotation().getQuaternion().normalize();
+		Matrix4f rotationMatrix = new Matrix4f(transform.getRotation().getQuaternion().ToRotationMatrix());
 
 		//position
 		Matrix4f positionMatrix = new Matrix4f().initIdentity();
@@ -120,8 +121,11 @@ public class Renderer extends Component {
 		*/
 		
 		//rotation
-		transform.getRotation().normalize();
-		Matrix4f inverseCameraRotationMatrix = new Matrix4f(cameraTransform.getRotation().ToRotationMatrix()).Transpose();
+		Quaternion cameraQuaternion = cameraTransform.getRotation().getQuaternion();
+		cameraQuaternion.normalize();
+		Matrix4f cameraRotationMatrix = cameraQuaternion.ToRotationMatrix();
+		
+		Matrix4f inverseCameraRotationMatrix = cameraRotationMatrix.Transpose();
 		
 		//position
 		Matrix4f inverseCameraPositionMatrix = new Matrix4f().initIdentity();

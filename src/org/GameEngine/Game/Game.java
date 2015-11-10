@@ -42,31 +42,44 @@ public class Game {
 
 	public void play(){
 	
-		GameObject g = new GameObject();
+		GameObject gameObject = new GameObject();
 		Mesh mesh = new Mesh();
 		List<Vector3f> vertices= new ArrayList<Vector3f>();
 		List<Color> colors= new ArrayList<Color>();
 		
-		vertices.add(new Vector3f(-0.5f, -0.5f, 0));
-		vertices.add(new Vector3f(0.5f, -0.5f, 0));
-		vertices.add(new Vector3f(0.5f, 0.5f, 0));
-		vertices.add(new Vector3f(0.5f, 0.5f, 0));
-		vertices.add(new Vector3f(-0.5f, 0.5f, 0));
-		vertices.add(new Vector3f(-0.5f, -0.5f, 0));
 		
-		vertices.add(new Vector3f(-0.5f, -0.5f, 0));
-		vertices.add(new Vector3f(-0.5f, -0.5f, 1));
-		vertices.add(new Vector3f(-0.5f, 0.5f, 1));
-		vertices.add(new Vector3f(-0.5f, -0.5f, 0));
-		vertices.add(new Vector3f(-0.5f, 0.5f, 1));
-		vertices.add(new Vector3f(-0.5f, 0.5f, 0));
+		Vector3f a = new Vector3f(-0.5f,-0.5f,0.5f);
+		Vector3f b = new Vector3f(0.5f,-0.5f,0.5f);
+		Vector3f c = new Vector3f(0.5f,0.5f,0.5f);
+		Vector3f d = new Vector3f(-0.5f,0.5f,0.5f);
+		Vector3f e = new Vector3f(-0.5f,-0.5f,-0.5f);
+		Vector3f f = new Vector3f(0.5f,-0.5f,-0.5f);
+		Vector3f g = new Vector3f(0.5f,0.5f,-0.5f);
+		Vector3f h = new Vector3f(-0.5f,0.5f,-0.5f);
 		
-		vertices.add(new Vector3f(-0.5f, -0.5f, 0));
-		vertices.add(new Vector3f(-0.5f, -0.5f, 1));
-		vertices.add(new Vector3f(0.5f, -0.5f, 1));
-		vertices.add(new Vector3f(-0.5f, -0.5f, 0));
-		vertices.add(new Vector3f(0.5f, -0.5f, 1));
-		vertices.add(new Vector3f(0.5f, -0.5f, 0));
+		
+		this.AddCube(vertices,a,b,c,d,e,f,g,h);
+		
+		colors.add(new Color(1, 1, 0, 1));
+		colors.add(new Color(1, 1, 1, 1));
+		colors.add(new Color(0, 1, 1, 1));
+		colors.add(new Color(1, 0, 0, 1));
+		colors.add(new Color(0, 0, 1, 1));
+		colors.add(new Color(0, 1, 0, 1));
+		
+		colors.add(new Color(1, 1, 0, 1));
+		colors.add(new Color(1, 1, 1, 1));
+		colors.add(new Color(0, 1, 1, 1));
+		colors.add(new Color(1, 0, 0, 1));
+		colors.add(new Color(0, 0, 1, 1));
+		colors.add(new Color(0, 1, 0, 1));
+		
+		colors.add(new Color(1, 1, 0, 1));
+		colors.add(new Color(1, 1, 1, 1));
+		colors.add(new Color(0, 1, 1, 1));
+		colors.add(new Color(1, 0, 0, 1));
+		colors.add(new Color(0, 0, 1, 1));
+		colors.add(new Color(0, 1, 0, 1));
 		
 		colors.add(new Color(1, 1, 0, 1));
 		colors.add(new Color(1, 1, 1, 1));
@@ -96,18 +109,18 @@ public class Game {
 		
 		renderer.setMesh(mesh);
 		
-		g.setRenderer(renderer);
+		gameObject.setRenderer(renderer);
 		
 		TestScript testScript = new TestScript();
-		g.addScript(testScript);;
+		gameObject.addScript(testScript);;
 		
-		Level.AddGameObject(g);
+		Level.AddGameObject(gameObject);
 		
 		
 		GameObject cameraObject = new GameObject();
 		cameraObject.setCamera(new Camera());
 		cameraObject.getCamera().setFarPlane(100);
-		cameraObject.getCamera().setNearPlane(1);
+		cameraObject.getCamera().setNearPlane(0.01f);
 		cameraObject.getCamera().setFOV((float)Math.PI/4);
 		cameraObject.getCamera().setAspectRatio(1);
 		
@@ -119,4 +132,23 @@ public class Game {
 		
 
 	}
+	
+	private void AddQuad(List<Vector3f> list, Vector3f a, Vector3f b, Vector3f c, Vector3f d){
+		list.add(a);
+		list.add(b);
+		list.add(c);
+		list.add(c);
+		list.add(d);
+		list.add(a);
+	}
+	
+	private void AddCube(List<Vector3f> list, Vector3f a,Vector3f b,Vector3f c,Vector3f d,Vector3f e,Vector3f f,Vector3f g,Vector3f h){
+		AddQuad(list,a,b,c,d);
+		AddQuad(list,a,d,h,e);
+		AddQuad(list,a,b,f,e);
+		AddQuad(list,d,c,g,h);
+		AddQuad(list,b,f,g,c);
+		AddQuad(list,e,f,g,h);
+	}
+	
 }

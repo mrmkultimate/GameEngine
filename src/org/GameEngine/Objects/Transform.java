@@ -6,8 +6,7 @@ public class Transform extends Component{
 	
 	private Vector3f position = new Vector3f(0,0,0);
 	private Vector3f scale = new Vector3f(1,1,1);
-
-	private Quaternion rotation = new Quaternion(0,0,0,1);//rotation in Quaternion
+	private Rotation rotation = new Rotation();
 	
 	public Transform(){ 
 		setName("Transform");
@@ -37,11 +36,11 @@ public class Transform extends Component{
 
 	
 
-	public Quaternion getRotation() {
+	public Rotation getRotation() {
 		return rotation;
 	}
 
-	public void setRotation(Quaternion rotation) {
+	public void setRotation(Rotation rotation) {
 		this.rotation = rotation;
 	}
 

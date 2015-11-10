@@ -2,24 +2,27 @@ package org.GameEngine.Math;
 
 public class Quaternion {
 
+	public float w;
 	public float x;
 	public float y;
 	public float z;
-	public float w;
+	
 	
 	
 	public Quaternion(){
+		this.w = 1;
 		this.x = 0;
 		this.y = 0;
 		this.z = 0;
-		this.w = 0;
 	}
 	
-	public Quaternion(float X, float Y, float Z, float W){
+	public Quaternion(float W, float X, float Y, float Z){
+		
+		this.w = W;
 		this.x = X;
 		this.y = Y;
 		this.z = Z;
-		this.w = W;
+		
 	}
 
 	
@@ -41,7 +44,7 @@ public class Quaternion {
 		float y_ = y*r.w + w*r.y + z*r.x - x*r.z;
 		float z_ = z*r.w + w*r.z + x*r.y - y*r.x;
 		
-		return new Quaternion(x_,y_,z_,w_);
+		return new Quaternion(w_,x_,y_,z_);
 	}
 	
 	public Quaternion Multiply(Vector3f r){
@@ -50,7 +53,7 @@ public class Quaternion {
 		float y_ = w*r.y + z*r.x - x*r.z;
 		float z_ = w*r.z + x*r.y - y*r.x;
 		
-		return new Quaternion(x_,y_,z_,w_);
+		return new Quaternion(w_,x_,y_,z_);
 	}
 	
 	
@@ -162,11 +165,15 @@ public class Quaternion {
 	    
 		return matrix;
 	}
-	
-	//TODO: QuatToRot for both matrix and yaw pitch roll
-	
-	//TODO: RotToQuat for both matrix and yaw pitch roll
-	
-	
-	
+	public Vector3f ToEulerAngles(){
+		Vector3f eulerAngles = new Vector3f();
+		eulerAngles.x = (float) Math.atan2(2*(w*x + y*z),1-2*(x*x + y*y));
+		eulerAngles.y = (float) Math.asin(2*(w*y - z*x));
+		eulerAngles.z = (float) Math.atan2(2*(w*z+x*y), 1-2*(y*y+z*z));
+		/*
+		Matrix4f rotMat = this.ToRotationMatrix();
+		Vector3f eulerAngles = rotMat.ToEulerAngles();
+		*/
+		return eulerAngles;
+	}
 }
