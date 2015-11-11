@@ -6,14 +6,14 @@ import org.GameEngine.Math.*;
 
 public class Mesh {
 
-	private List<Vector3f> vertices;
-	private List<Integer> verticesIndex;
+	private List<Vector3f> vertices = new ArrayList<Vector3f>();
+	private List<Integer> verticesIndex = new ArrayList<Integer>();
 	
-	private List<Vector3f> normals;
+	private List<Vector3f> normals = new ArrayList<Vector3f>();
 	
-	private List<Vector2f> textureVertices;
+	private List<Vector2f> textureVertices = new ArrayList<Vector2f>();
 	
-	private List<Color> colors;
+	private List<Color> colors = new ArrayList<Color>();
 	
 	
 	private boolean verticesUpdated = false;
@@ -90,6 +90,32 @@ public class Mesh {
 	}
 	public void setColorsUpdated(boolean colorsUpdated) {
 		this.colorsUpdated = colorsUpdated;
+	}
+	
+	public static List<Vector3f> CalculateVertexNormals(List<Vector3f> verticeList, List<Integer> indexList){
+		List<Vector3f> normalsList = new ArrayList<Vector3f>();
+		//TODO: add calculation to calculate normals at vertices points
+		
+		return normalsList;
+	}
+	
+	public static List<Vector3f> CalculateNormals(List<Vector3f> verticeList){
+		List<Vector3f> normalsList = new ArrayList<Vector3f>();
+		if(verticeList.size()%3 == 0){
+			for(int i = 0; i<verticeList.size(); i = i + 3){
+				Vector3f normal = new Vector3f();
+				Vector3f v1 = verticeList.get(i);
+				Vector3f v2 = verticeList.get(i+1);
+				Vector3f v3 = verticeList.get(i+2);
+				normal = Vector3f.Cross(Vector3f.Subtract(v2, v1), Vector3f.Subtract(v3, v1)).normalize();
+				normalsList.add(normal);
+			}
+		}
+		else{
+			System.out.println("Bad Vector3f list size");
+		}
+		
+		return normalsList;
 	}
 	
 }

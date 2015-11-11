@@ -29,11 +29,13 @@ public class Renderer extends Component {
 	IntBuffer vertexArray = IntBuffer.allocate(1);
 	//private int program;
 	
-	private IntBuffer buffers = IntBuffer.allocate(2);
+	private IntBuffer buffers = IntBuffer.allocate(3);
 	
 
 	FloatBuffer vertexFB;
 	FloatBuffer colorFB;
+	FloatBuffer normalFB;
+	
 	FloatBuffer gameObjectPositionFB;
 	FloatBuffer gameObjectTransformationMatrixFB;
 	FloatBuffer modelViewMatrixFB;
@@ -41,6 +43,7 @@ public class Renderer extends Component {
 	
 	float[] vertices;
 	float[] colors;
+	float[] normals;
 	
 	float[] gameObjectPosition = new float[4];
 	float[] gameObjectTransformationMatrix = new float[16];
@@ -263,8 +266,19 @@ public class Renderer extends Component {
        	
        	
        	//TODO add attribs for normals
-       	
-     
+       	//VertexAttribArray 2 corresponds with location 2 in the vertex shader
+       	gl.glEnableVertexAttribArray(2);
+       	gl.glBindBuffer(GL.GL_ARRAY_BUFFER, buffers.get(2));
+       	gl.glVertexAttribPointer(2,3,GL.GL_FLOAT,false,0,0);
+       	/*
+       	var nBuffer = gl.createBuffer();
+        gl.bindBuffer( gl.ARRAY_BUFFER, nBuffer );
+        gl.bufferData( gl.ARRAY_BUFFER, flatten(normals), gl.STATIC_DRAW );
+   	 	gl.bindBuffer(gl.ARRAY_BUFFER,nBuffer);
+   	 	var vNormal = gl.getAttribLocation( program, "vNormal" );
+   	 	gl.vertexAttribPointer( vNormal, 3, gl.FLOAT, false, 0, 0 );
+   	 	gl.enableVertexAttribArray( vNormal );
+   	 	*/
        	initialized = true;
        	
 	}
@@ -324,7 +338,26 @@ public class Renderer extends Component {
 		
 		
 		if(mesh.isNormalsUpdated()){
-			
+			List<Vector3f> vector3fNormals = mesh.getNormals();
+			if(vector3fNormals.size() == mesh.getVertices().size()){
+				normals = new float[vector3fNormals.size()*3];
+				int i = 0;
+				for(Vector3f vector3fNormal:vector3fNormals){
+					normals[i] = vector3fNormal.x;
+					normals[i+1] = vector3fNormal.y;
+					normals[i+2] = vector3fNormal.z;
+					
+					i = i + 3;
+				} 
+						
+				normalFB = FloatBuffer.wrap(normals);		
+				
+				gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, buffers.get(2));
+		        gl.glBufferData(GL2.GL_ARRAY_BUFFER, 4 * vector3fNormals.size() * 3, normalFB, GL3.GL_STATIC_DRAW);
+			}
+			else{
+				System.out.println("Wrong Normals Size");
+			}
 			
 			mesh.setNormalsUpdated(false);
 		}

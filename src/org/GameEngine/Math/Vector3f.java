@@ -36,9 +36,11 @@ public class Vector3f {
 	}
 	
 	public Vector3f Cross(Vector3f rhv){
-		this.x = y*rhv.z - z*rhv.y;
-		this.y = z*rhv.x - x*rhv.z;
-		this.z = x*rhv.y - y*rhv.x;
+		Vector3f lhv = new Vector3f(this);
+		
+		this.x = lhv.y*rhv.z - lhv.z*rhv.y;
+		this.y = lhv.z*rhv.x - lhv.x*rhv.z;
+		this.z = lhv.x*rhv.y - lhv.y*rhv.x;
 		return this;
 	}
 	
@@ -80,9 +82,9 @@ public class Vector3f {
 	}	
 	public static Vector3f Subtract(Vector3f v1, Vector3f v2){
 		Vector3f v3 = new Vector3f(0,0,0);
-		v3.x = v1.x + v2.x;
-		v3.y = v1.y + v2.y;
-		v3.z = v1.z + v2.z;
+		v3.x = v1.x - v2.x;
+		v3.y = v1.y - v2.y;
+		v3.z = v1.z - v2.z;
 		return v3;
 	}
 	public Vector3f Multiply(float scalar){

@@ -87,6 +87,9 @@ public final class Level {
 		
 		AddNewObjectsToLevel();
 		
+		//System.out.println("GameObjects = ");
+		//System.out.println(gameObjects.size());
+		
 	}
 	
 	

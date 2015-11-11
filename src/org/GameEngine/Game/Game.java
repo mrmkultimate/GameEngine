@@ -45,6 +45,7 @@ public class Game {
 		GameObject gameObject = new GameObject();
 		Mesh mesh = new Mesh();
 		List<Vector3f> vertices= new ArrayList<Vector3f>();
+		List<Vector3f> normals = new ArrayList<Vector3f>();
 		List<Color> colors= new ArrayList<Color>();
 		
 		
@@ -59,6 +60,9 @@ public class Game {
 		
 		
 		this.AddCube(vertices,a,b,c,d,e,f,g,h);
+		
+		normals = Mesh.CalculateNormals(vertices);
+		
 		
 		colors.add(new Color(1, 1, 0, 1));
 		colors.add(new Color(1, 1, 1, 1));
@@ -103,7 +107,12 @@ public class Game {
 		colors.add(new Color(0, 1, 0, 1));
 		
 		mesh.setVertices(vertices);
+		mesh.setNormals(normals);
 		mesh.setColors(colors);
+		
+		System.out.println(normals.get(0).x);
+		System.out.println(normals.get(0).y);
+		System.out.println(normals.get(0).z);
 		
 		Renderer renderer = new Renderer();
 		
@@ -145,10 +154,10 @@ public class Game {
 	private void AddCube(List<Vector3f> list, Vector3f a,Vector3f b,Vector3f c,Vector3f d,Vector3f e,Vector3f f,Vector3f g,Vector3f h){
 		AddQuad(list,a,b,c,d);
 		AddQuad(list,a,d,h,e);
-		AddQuad(list,a,b,f,e);
+		AddQuad(list,a,e,f,b);
 		AddQuad(list,d,c,g,h);
 		AddQuad(list,b,f,g,c);
-		AddQuad(list,e,f,g,h);
+		AddQuad(list,e,h,g,f);
 	}
 	
 }

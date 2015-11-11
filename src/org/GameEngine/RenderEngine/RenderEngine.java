@@ -142,7 +142,13 @@ public class RenderEngine extends JFrame implements GLEventListener {
         gl.glClearDepthf(10.0f);
         gl.glClearColor(0.8f, 0.6f, 0.8f, 1.0f);
         gl.glDepthFunc(GL2.GL_LEQUAL);
-	
+
+        
+        //if you want to make the back of the faces not render
+        gl.glFrontFace(GL.GL_CCW);
+       	gl.glCullFace(GL.GL_FRONT);
+       	gl.glEnable(GL.GL_CULL_FACE);
+       	
        	
        	// Create program.
        	program = gl.glCreateProgram();
