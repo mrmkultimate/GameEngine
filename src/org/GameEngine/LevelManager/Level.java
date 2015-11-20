@@ -3,6 +3,7 @@ import java.util.*;
 
 import org.GameEngine.Objects.*;
 import org.GameEngine.RenderEngine.Camera;
+import org.GameEngine.RenderEngine.Color;
 import org.GameEngine.RenderEngine.Renderer;
 import org.GameEngine.System.*;
 
@@ -11,9 +12,13 @@ import com.jogamp.opengl.GLAutoDrawable;
 public final class Level {
 	private static List<GameObject> gameObjects = new ArrayList<GameObject>();
 	private static GameObject mainCameraObject;
+	private static List<GameObject> lightObjects = new ArrayList<GameObject>();
 	private static List<GameObject> gameObjectsToAdd = new ArrayList<GameObject>();
 	
+	
 	private static boolean exit = false;
+	
+	private static Color lightAmbient = new Color(0.5f,0.5f,0.5f,1);
 	
 	private Level(){
 		gameObjects.clear();
@@ -179,6 +184,9 @@ public final class Level {
 	public static void AddNewObjectsToLevel(){
 		for(GameObject gameObject:gameObjectsToAdd){
 			gameObjects.add(gameObject);
+			if(gameObject.getLight() != null){
+				lightObjects.add(gameObject);
+			}
 		}
 		gameObjectsToAdd.clear();
 	}
@@ -214,4 +222,21 @@ public final class Level {
 	public static boolean isExit() {
 		return exit;
 	}
+
+	public static Color getLightAmbient() {
+		return lightAmbient;
+	}
+
+	public static void setLightAmbient(Color lightAmbient) {
+		Level.lightAmbient = lightAmbient;
+	}
+
+	public static List<GameObject> getLightObjects() {
+		return lightObjects;
+	}
+
+	public static void setLightObjects(List<GameObject> lights) {
+		Level.lightObjects = lights;
+	}
+
 }

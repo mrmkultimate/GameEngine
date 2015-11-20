@@ -141,7 +141,7 @@ public class Matrix3f {
 	
 
 	public void setToEqual(float[] matrix) {
-		if(matrix.length == 9){
+		try{
 			m[0][0] = matrix[0];
 			m[0][1] = matrix[1];
 			m[0][2] = matrix[2];
@@ -152,8 +152,8 @@ public class Matrix3f {
 			m[2][1] = matrix[7];
 			m[2][2] = matrix[8];
 			matrix1DArray = matrix.clone();
-		}else{
-			throw new RuntimeException("Wrong Size for Matrix");
+		}catch(Exception e){
+			throw new IllegalArgumentException("unable to set the Matrix3f using a float[]", e);
 		}
 	}
 
@@ -178,7 +178,7 @@ public class Matrix3f {
 	}
 
 	public void setToEqual(float[][] matrix2DArray) {
-		
+		try{
 		m = Matrix4f.deepCopyFloatMatrix(matrix2DArray);
 		
 		matrix1DArray[0] = matrix2DArray[0][0];
@@ -190,6 +190,10 @@ public class Matrix3f {
 		matrix1DArray[6] = matrix2DArray[2][0];
 		matrix1DArray[7] = matrix2DArray[2][1];
 		matrix1DArray[8] = matrix2DArray[2][2];
+		}
+		catch(Exception e){
+			throw new IllegalArgumentException("unable to set the Matrix3f using a float[][]", e);
+		}
 	}
 
 	public void set(int x, int y, float value){

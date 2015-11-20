@@ -99,7 +99,7 @@ public class Mesh {
 		return normalsList;
 	}
 	
-	public static List<Vector3f> CalculateNormals(List<Vector3f> verticeList){
+	public static List<Vector3f> CalculateFaceNormals(List<Vector3f> verticeList){
 		List<Vector3f> normalsList = new ArrayList<Vector3f>();
 		if(verticeList.size()%3 == 0){
 			for(int i = 0; i<verticeList.size(); i = i + 3){
@@ -108,6 +108,8 @@ public class Mesh {
 				Vector3f v2 = verticeList.get(i+1);
 				Vector3f v3 = verticeList.get(i+2);
 				normal = Vector3f.Cross(Vector3f.Subtract(v2, v1), Vector3f.Subtract(v3, v1)).normalize();
+				normalsList.add(normal);
+				normalsList.add(normal);
 				normalsList.add(normal);
 			}
 		}

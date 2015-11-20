@@ -7,6 +7,7 @@ import java.util.List;
 import org.GameEngine.LevelManager.Level;
 import org.GameEngine.Math.Matrix4f;
 import org.GameEngine.Math.Quaternion;
+import org.GameEngine.Math.Vector2f;
 import org.GameEngine.Math.Vector3f;
 import org.GameEngine.Objects.Component;
 import org.GameEngine.Objects.GameObject;
@@ -29,21 +30,26 @@ public class Renderer extends Component {
 	IntBuffer vertexArray = IntBuffer.allocate(1);
 	//private int program;
 	
-	private IntBuffer buffers = IntBuffer.allocate(3);
+	private IntBuffer buffers = IntBuffer.allocate(4);
 	
 
+	//vertex shader in
 	FloatBuffer vertexFB;
 	FloatBuffer colorFB;
 	FloatBuffer normalFB;
-	
-	FloatBuffer gameObjectPositionFB;
-	FloatBuffer gameObjectTransformationMatrixFB;
-	FloatBuffer modelViewMatrixFB;
-	FloatBuffer projectionMatrixFB;	
+	FloatBuffer textureFB;
 	
 	float[] vertices;
 	float[] colors;
 	float[] normals;
+	float[] textureCoordinates;
+	
+	
+	//uniforms
+	FloatBuffer gameObjectPositionFB;
+	FloatBuffer gameObjectTransformationMatrixFB;
+	FloatBuffer modelViewMatrixFB;
+	FloatBuffer projectionMatrixFB;	
 	
 	float[] gameObjectPosition = new float[4];
 	float[] gameObjectTransformationMatrix = new float[16];
@@ -65,7 +71,7 @@ public class Renderer extends Component {
 		
 	
 	
-		//TODO: calculate gameobject transformation matrix (for the position, rotation, and scale of the gameobject)
+		//Calculate gameobject transformation matrix (for the position, rotation, and scale of the gameobject)
 		//scale, then rotate, then translate
 		Transform transform = this.gameObject.getTransform();
 		
@@ -105,13 +111,60 @@ public class Renderer extends Component {
 		 */
 		
 		
-		//TODO: add uniforms for light 
-		//	vec4 ambientProduct, diffuseProduct, specularProduct, lightPosition
-		//	float shininess;
+		
+		Color materialAmbient = material.getAmbient();
+		Color materialDiffuse = material.getDiffuse();
+		Color materialSpecular = material.getSpecular();
+		
+		List<GameObject> lightObjects = Level.getLightObjects();
+		Color lightAmbient = Level.getLightAmbient();
+		
+		
+		//for now assume there is only one light
+		Light light;
+		Color lightDiffuse = new Color(0,0,0,1);
+		Color lightSpecular = new Color(0,0,0,1);
+		if(!lightObjects.isEmpty()){
+			light = lightObjects.get(0).getLight();
+			lightDiffuse = light.getDiffuse();
+			lightSpecular = light.getSpecular();
+			
+			//add light position to the shader
+			Transform lightObjectTransform = lightObjects.get(0).getTransform();
+			FloatBuffer lightPositionFB;
+			float[] lightPosition = {lightObjectTransform.getPosition().x,lightObjectTransform.getPosition().y,lightObjectTransform.getPosition().z,1};
+			lightPositionFB = FloatBuffer.wrap(lightPosition);	
+			gl.glUniform4fv(gl.glGetUniformLocation(program, "lightPosition"), 1,lightPositionFB);
+			
+		}
+		else{
+			
+		}
 		
 		
 		
-		//TODO: calculate the model view matrix using the camera transform(used for position, rotation, scale of the camera)
+		Color ambientProduct = Color.Multiply(lightAmbient, materialAmbient);
+	    Color diffuseProduct = Color.Multiply(lightDiffuse, materialDiffuse);
+	    Color specularProduct = Color.Multiply(lightSpecular, materialSpecular); 
+		
+	    //put the colors into a buffer 
+	    FloatBuffer ambientProductFB;
+	    FloatBuffer diffuseProductFB;
+	    FloatBuffer specularProductFB;
+	    float[] ambientProductFA = {ambientProduct.red,ambientProduct.green,ambientProduct.blue,ambientProduct.alpha};
+	    float[] diffuseProductFA = {diffuseProduct.red,diffuseProduct.green,diffuseProduct.blue,diffuseProduct.alpha};
+	    float[] specularProductFA = {specularProduct.red,specularProduct.green,specularProduct.blue,specularProduct.alpha};
+	    
+	    ambientProductFB = FloatBuffer.wrap(ambientProductFA);	
+	    diffuseProductFB = FloatBuffer.wrap(diffuseProductFA);	
+	    specularProductFB = FloatBuffer.wrap(specularProductFA);	
+		
+		//add colors to the shader
+		gl.glUniform4fv(gl.glGetUniformLocation(program, "ambientProduct"), 1,ambientProductFB);
+		gl.glUniform4fv(gl.glGetUniformLocation(program, "diffuseProduct"), 1,diffuseProductFB);
+		gl.glUniform4fv(gl.glGetUniformLocation(program, "specularProduct"), 1,specularProductFB);
+		gl.glUniform1f(gl.glGetUniformLocation(program, "shininess"), material.getShininess());
+		//Calculate the model view matrix using the camera transform(used for position, rotation, scale of the camera)
 		GameObject camera = Level.getMainCameraObject();
 		Transform cameraTransform = camera.getTransform();
 		
@@ -241,12 +294,10 @@ public class Renderer extends Component {
 		// Create Vertex Array.
 		GL3 gl = drawable.getGL().getGL3();
 		
-		gl.glGenBuffers(2, buffers);
+		gl.glGenBuffers(4, buffers);
        	
         gl.glGenVertexArrays(1, vertexArray);
        	gl.glBindVertexArray(vertexArray.get(0));
-       	
-       	
        	
        	
     	// Specify how data should be sent to the Program.
@@ -261,24 +312,18 @@ public class Renderer extends Component {
        	gl.glBindBuffer(GL.GL_ARRAY_BUFFER, buffers.get(1));
        	gl.glVertexAttribPointer(1, 4, GL.GL_FLOAT, false, 0, 0);
        	
-       	
-       	//TODO add attribs for textures
-       	
-       	
-       	//TODO add attribs for normals
        	//VertexAttribArray 2 corresponds with location 2 in the vertex shader
        	gl.glEnableVertexAttribArray(2);
        	gl.glBindBuffer(GL.GL_ARRAY_BUFFER, buffers.get(2));
        	gl.glVertexAttribPointer(2,3,GL.GL_FLOAT,false,0,0);
-       	/*
-       	var nBuffer = gl.createBuffer();
-        gl.bindBuffer( gl.ARRAY_BUFFER, nBuffer );
-        gl.bufferData( gl.ARRAY_BUFFER, flatten(normals), gl.STATIC_DRAW );
-   	 	gl.bindBuffer(gl.ARRAY_BUFFER,nBuffer);
-   	 	var vNormal = gl.getAttribLocation( program, "vNormal" );
-   	 	gl.vertexAttribPointer( vNormal, 3, gl.FLOAT, false, 0, 0 );
-   	 	gl.enableVertexAttribArray( vNormal );
-   	 	*/
+
+       	//TODO add attribs for textures
+       	//VertexAttribArray 3 corresponds with location 3 in the vertex shader
+       	gl.glEnableVertexAttribArray(3);
+       	gl.glBindBuffer(GL.GL_ARRAY_BUFFER, buffers.get(3));
+       	gl.glVertexAttribPointer(3,2,GL.GL_FLOAT,false,0,0);
+       	
+       	
        	initialized = true;
        	
 	}
@@ -363,9 +408,24 @@ public class Renderer extends Component {
 		}
 		
 		if(mesh.isTextureVerticesUpdated()){
-			
-			
-			
+			List<Vector2f> TextureCoords = mesh.getTextureVertices();
+			if(TextureCoords.size() == mesh.getVertices().size()){
+				textureCoordinates = new float[TextureCoords.size()*2];
+				int i = 0;
+				for(Vector2f TextureCoord:TextureCoords){
+					textureCoordinates[i] = TextureCoord.x;
+					textureCoordinates[i+1] = TextureCoord.y;
+					i = i + 2;
+				} 
+						
+				textureFB = FloatBuffer.wrap(textureCoordinates);		
+				
+				gl.glBindBuffer(GL2.GL_ARRAY_BUFFER, buffers.get(3));
+		        gl.glBufferData(GL2.GL_ARRAY_BUFFER, 4 * TextureCoords.size() * 2, textureFB, GL3.GL_STATIC_DRAW);
+			}
+			else{
+				System.out.println("Wrong Texture Coordinate Size");
+			}
 			
 			mesh.setTextureVerticesUpdated(false);
 		}

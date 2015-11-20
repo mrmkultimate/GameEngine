@@ -16,7 +16,6 @@ public class Matrix4f {
 	}
 	
 	public Matrix4f(float[][] mat) {
-		// TODO Auto-generated constructor stub
 		this.setToEqual(mat);
 	}
 
@@ -102,24 +101,30 @@ public class Matrix4f {
 	}
 	
 	public Matrix4f setToEqual(float[][] mat){
-		if(mat.length != 4){
-			System.out.println("Matrix4f error in setToEqual");
-			return null;
-		}
-		
-		for(int k = 0; k<4; k++){
-			if(mat[k].length != 4){
-				System.out.println("Matrix4f error in setToEqual");
-				return null;
+		try{
+			
+//			if(mat.length != 4){
+//				System.out.println("Matrix4f error in setToEqual");
+//				return null;
+//			}
+//			
+//			for(int k = 0; k<4; k++){
+//				if(mat[k].length != 4){
+//					System.out.println("Matrix4f error in setToEqual");
+//					return null;
+//				}
+//			}
+			
+			for(int i = 0; i<4; i++){
+				for(int j = 0; j<4; j++){
+					m[i][j] = mat[i][j];
+				}
 			}
 		}
-		
-		for(int i = 0; i<4; i++){
-			for(int j = 0; j<4; j++){
-				m[i][j] = mat[i][j];
-			}
+		catch(Exception e)
+		{
+			throw new IllegalArgumentException("unable to set the Matrix4f using a float[][]", e);
 		}
-		
 		return this;
 		
 	}
@@ -180,7 +185,7 @@ public class Matrix4f {
 		    result.y *= Math.signum(m[2][1] + m[1][2]);
 		    result.z *= +1.0f;
 		} else {
-			System.out.println("coding error");
+			System.out.println("coding error in Matrix4f.ToQuaternion()");
 		}
 		
 		/*

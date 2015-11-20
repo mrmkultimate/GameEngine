@@ -32,6 +32,13 @@ public class Color {
 		blue = color.blue;
 		alpha = color.alpha;
 	}
-	
+	public static Color Multiply(Color lhc, Color rhc){
+		Color result = new Color(1,1,1,1);
+		result.red = lhc.red*rhc.red;
+		result.green = lhc.green*rhc.green;
+		result.blue = lhc.blue*rhc.blue;
+		result.alpha = lhc.alpha*rhc.alpha;
+		return result;
+	}
 	
 }

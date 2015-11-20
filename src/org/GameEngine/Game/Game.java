@@ -26,8 +26,11 @@ import com.jogamp.opengl.util.*;
 import org.GameEngine.Objects.*;
 import org.GameEngine.RenderEngine.Camera;
 import org.GameEngine.RenderEngine.Color;
+import org.GameEngine.RenderEngine.Light;
+import org.GameEngine.RenderEngine.Material;
 import org.GameEngine.RenderEngine.Mesh;
 import org.GameEngine.RenderEngine.Renderer;
+import org.GameEngine.RenderEngine.Texture;
 import org.GameEngine.System.*;
 
 public class Game {
@@ -42,12 +45,13 @@ public class Game {
 
 	public void play(){
 	
+
 		GameObject gameObject = new GameObject();
 		Mesh mesh = new Mesh();
 		List<Vector3f> vertices= new ArrayList<Vector3f>();
 		List<Vector3f> normals = new ArrayList<Vector3f>();
 		List<Color> colors= new ArrayList<Color>();
-		
+		List<Vector2f> textCoords = new ArrayList<Vector2f>();
 		
 		Vector3f a = new Vector3f(-0.5f,-0.5f,0.5f);
 		Vector3f b = new Vector3f(0.5f,-0.5f,0.5f);
@@ -58,65 +62,48 @@ public class Game {
 		Vector3f g = new Vector3f(0.5f,0.5f,-0.5f);
 		Vector3f h = new Vector3f(-0.5f,0.5f,-0.5f);
 		
-		
+		Vector3f normA = new Vector3f(-1,-1,1).normalize();
+		Vector3f normB = new Vector3f(1,-1,1).normalize();
+		Vector3f normC = new Vector3f(1,1,1).normalize();
+		Vector3f normD = new Vector3f(-1,1,1).normalize();
+		Vector3f normE = new Vector3f(-1,-1,-1).normalize();
+		Vector3f normF = new Vector3f(1,-1,-1).normalize();
+		Vector3f normG = new Vector3f(1,1,-1).normalize();
+		Vector3f normH = new Vector3f(-1,1,-1).normalize();
+				
 		this.AddCube(vertices,a,b,c,d,e,f,g,h);
+		//this.AddCubeNormals(normals,normA,normB,normC,normD,normE,normF,normG,normH);
 		
-		normals = Mesh.CalculateNormals(vertices);
+		normals = Mesh.CalculateFaceNormals(vertices);
 		
 		
-		colors.add(new Color(1, 1, 0, 1));
-		colors.add(new Color(1, 1, 1, 1));
-		colors.add(new Color(0, 1, 1, 1));
-		colors.add(new Color(1, 0, 0, 1));
-		colors.add(new Color(0, 0, 1, 1));
-		colors.add(new Color(0, 1, 0, 1));
 		
-		colors.add(new Color(1, 1, 0, 1));
-		colors.add(new Color(1, 1, 1, 1));
-		colors.add(new Color(0, 1, 1, 1));
-		colors.add(new Color(1, 0, 0, 1));
-		colors.add(new Color(0, 0, 1, 1));
-		colors.add(new Color(0, 1, 0, 1));
+		for(int i = 0; i<vertices.size();i++){
+			colors.add(new Color(1, 1, 1, 1));
+			textCoords.add(new Vector2f(0,0));
+		}
 		
-		colors.add(new Color(1, 1, 0, 1));
-		colors.add(new Color(1, 1, 1, 1));
-		colors.add(new Color(0, 1, 1, 1));
-		colors.add(new Color(1, 0, 0, 1));
-		colors.add(new Color(0, 0, 1, 1));
-		colors.add(new Color(0, 1, 0, 1));
-		
-		colors.add(new Color(1, 1, 0, 1));
-		colors.add(new Color(1, 1, 1, 1));
-		colors.add(new Color(0, 1, 1, 1));
-		colors.add(new Color(1, 0, 0, 1));
-		colors.add(new Color(0, 0, 1, 1));
-		colors.add(new Color(0, 1, 0, 1));
-		
-		colors.add(new Color(1, 1, 0, 1));
-		colors.add(new Color(1, 1, 1, 1));
-		colors.add(new Color(0, 1, 1, 1));
-		colors.add(new Color(1, 0, 0, 1));
-		colors.add(new Color(0, 0, 1, 1));
-		colors.add(new Color(0, 1, 0, 1));
-		
-		colors.add(new Color(1, 1, 0, 1));
-		colors.add(new Color(1, 1, 1, 1));
-		colors.add(new Color(0, 1, 1, 1));
-		colors.add(new Color(1, 0, 0, 1));
-		colors.add(new Color(0, 0, 1, 1));
-		colors.add(new Color(0, 1, 0, 1));
-		
+	
 		mesh.setVertices(vertices);
 		mesh.setNormals(normals);
 		mesh.setColors(colors);
+		mesh.setTextureVertices(textCoords);
 		
-		System.out.println(normals.get(0).x);
-		System.out.println(normals.get(0).y);
-		System.out.println(normals.get(0).z);
+		//System.out.println(normals.get(0).x);
+		//System.out.println(normals.get(0).y);
+		//System.out.println(normals.get(0).z);
 		
 		Renderer renderer = new Renderer();
 		
+		Material material = new Material();
+		material.setAmbient(new Color(0,0,0,1f));
+		material.setDiffuse(new Color(0,0.5f,0,1f));
+		material.setSpecular(new Color(0.4f,0.4f,0.4f,1));
+		material.setShininess(4);
+		material.setTexture(new Texture());
+		
 		renderer.setMesh(mesh);
+		renderer.setMaterial(material);
 		
 		gameObject.setRenderer(renderer);
 		
@@ -139,9 +126,38 @@ public class Game {
 		
 		Level.AddGameObject(cameraObject);
 		
-
+		
+		GameObject lightObject = new GameObject();
+		lightObject.getTransform().setPosition(new Vector3f(0,0,-5));
+		lightObject.setLight(new Light());
+		lightObject.getLight().setDiffuse(new Color(1,1,1,1));
+		lightObject.getLight().setSpecular(new Color(1,1,1,1));
+		
+		
+//		Renderer lightRenderer = new Renderer();
+//		Mesh lightMesh = new Mesh();
+//		lightMesh.setColors(colors);
+//		lightMesh.setVertices(vertices);
+//		lightMesh.setNormals(normals);
+//		Material lightMaterial = new Material();
+//		lightMaterial.setAmbient(new Color(1,1,1,1));
+//		lightMaterial.setDiffuse(new Color(1,1,1,1));
+//		lightMaterial.setSpecular(new Color(1,1,1,1));
+//		lightMaterial.setShininess(4);
+//		
+//		lightRenderer.setMesh(lightMesh);
+//		lightRenderer.setMaterial(lightMaterial);
+//		lightObject.setRenderer(lightRenderer);
+	
+		Level.AddGameObject(lightObject);
+		
+		Level.setLightAmbient(new Color(0.7f,0.7f,0.7f,1));
+		
 	}
 	
+	
+
+
 	private void AddQuad(List<Vector3f> list, Vector3f a, Vector3f b, Vector3f c, Vector3f d){
 		list.add(a);
 		list.add(b);
@@ -158,6 +174,24 @@ public class Game {
 		AddQuad(list,d,c,g,h);
 		AddQuad(list,b,f,g,c);
 		AddQuad(list,e,h,g,f);
+	}
+	
+	private void AddCubeNormals(List<Vector3f> list, Vector3f a, Vector3f b, Vector3f c, Vector3f d,Vector3f e, Vector3f f, Vector3f g, Vector3f h) {
+		AddQuadNormals(list,a,b,c,d);
+		AddQuadNormals(list,a,d,h,e);
+		AddQuadNormals(list,a,e,f,b);
+		AddQuadNormals(list,d,c,g,h);
+		AddQuadNormals(list,b,f,g,c);
+		AddQuadNormals(list,e,h,g,f);
+		
+	}
+	private void AddQuadNormals(List<Vector3f> list, Vector3f a, Vector3f b, Vector3f c, Vector3f d){
+		list.add(a);
+		list.add(b);
+		list.add(c);
+		list.add(c);
+		list.add(d);
+		list.add(a);
 	}
 	
 }

@@ -2,6 +2,7 @@ package org.GameEngine.Objects;
 import java.util.*;
 
 import org.GameEngine.RenderEngine.Camera;
+import org.GameEngine.RenderEngine.Light;
 import org.GameEngine.RenderEngine.Renderer;
 
 public class GameObject {
@@ -13,6 +14,7 @@ public class GameObject {
 	private List<Script> scripts = new ArrayList<Script>();
 	private List<GameObject> children = new ArrayList<GameObject>();
 	private Camera camera = null;
+	private Light light = null;
 	private GameObject parent;
 	
 	public GameObject(){
@@ -112,6 +114,14 @@ public class GameObject {
 		
 		
 		this.parent = parent;
+	}
+
+	public Light getLight() {
+		return light;
+	}
+
+	public void setLight(Light light) {
+		this.light = light;
 	}
 	
 	

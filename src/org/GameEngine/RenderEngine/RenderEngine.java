@@ -140,14 +140,20 @@ public class RenderEngine extends JFrame implements GLEventListener {
 
         gl.glEnable(GL2.GL_DEPTH_TEST);
         gl.glClearDepthf(10.0f);
-        gl.glClearColor(0.8f, 0.6f, 0.8f, 1.0f);
+        gl.glClearColor(0.8f, 0.6f, 0.8f, 0);
         gl.glDepthFunc(GL2.GL_LEQUAL);
 
+        
+        
         
         //if you want to make the back of the faces not render
         gl.glFrontFace(GL.GL_CCW);
        	gl.glCullFace(GL.GL_FRONT);
        	gl.glEnable(GL.GL_CULL_FACE);
+       	
+       	//allow alpha (only works if alpha objects are rendered last if they are closer to the camera)
+       	gl.glEnable (GL.GL_BLEND);
+       	gl.glBlendFunc (GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
        	
        	
        	// Create program.
@@ -166,6 +172,7 @@ public class RenderEngine extends JFrame implements GLEventListener {
        	int fragmentShader = gl.glCreateShader(GL2ES2.GL_FRAGMENT_SHADER);
        	String[] fragmentShaderSource = new String[1];
        	fragmentShaderSource[0] = loadFile("src/org/GameEngine/RenderEngine/defaultFragmentShader.fsh");
+    	//fragmentShaderSource[0] = loadFile("src/org/GameEngine/RenderEngine/lightingFragmentShader.fsh");
 
        	gl.glShaderSource(fragmentShader, 1, fragmentShaderSource, null);
        	gl.glCompileShader(fragmentShader);
@@ -185,9 +192,8 @@ public class RenderEngine extends JFrame implements GLEventListener {
    	}
    	
    	
-   	/**
-	 * Load a text file and return its contents as a String.
-	 */
+   	
+	//Load a text file and return its contents as a String.
 	private String loadFile(String filename)
 	{
 		StringBuilder vertexCode = new StringBuilder();
